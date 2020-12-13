@@ -3,7 +3,7 @@ import fs from "fs"
 import axios from "axios"
 import {Node} from "./types"
 
-export type FlatNode = { rawUrl: string; ghUrl: string; route: string; path: string }
+export type FlatNode = { rawUrl: string; ghUrl: string; route: string; path: string, yamlUrl: string }
 export type FlatNodes = FlatNode[]
 
 export async function urlTreeFromYaml(location: string, remote=true) {
@@ -16,12 +16,13 @@ export async function urlTreeFromYaml(location: string, remote=true) {
   return yaml.safeLoad(yamlText) as Node;
 }
 
-export function urlRoutes(root: Node) {
+export async function urlRoutes(yamlUrl: string) {
+  let root = await urlTreeFromYaml(yamlUrl)
   let paths: FlatNodes = [];
   function dfs(node: Node) {
     if ("rawUrl" in node && "ghUrl" in node && "route" in node && "path" in node) {
       let {rawUrl, ghUrl, route, path} = node
-      paths.push({ rawUrl, ghUrl, route, path } as FlatNode);
+      paths.push({ rawUrl, ghUrl, route, path, yamlUrl } as FlatNode);
     }
     if ("children" in node && node.children) {
       for (let child of node.children) {
@@ -35,9 +36,8 @@ export function urlRoutes(root: Node) {
 
 export async function allUrlRoutes(urls: string[]) {
   let allUrlRoutesList: FlatNodes = []
-  for (let url of urls) {
-    let root = await urlTreeFromYaml(url)
-    allUrlRoutesList.push(...urlRoutes(root))
+  for (let yamlUrl of urls) {
+    allUrlRoutesList.push(...(await urlRoutes(yamlUrl)))
   }
   return allUrlRoutesList
 }
