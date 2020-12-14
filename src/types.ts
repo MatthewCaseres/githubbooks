@@ -1,4 +1,4 @@
-export type Node = {
+export type UrlNode = {
   type: string;
   title: string;
   rawUrl?: string;
@@ -7,6 +7,6 @@ export type Node = {
   ghUrl?: string;
   name?: string;
   id?: string;
-  children?: Node[];
+  children?: UrlNode[];
   extension?: string;
 };

@@ -1,4 +1,4 @@
 import { getAllRawRoutes, getYamlUrlTree, getMdSource } from './tree';
-import { Node } from './types';
+import { UrlNode } from './types';
 
-export { getAllRawRoutes, getYamlUrlTree, Node, getMdSource };
+export { getAllRawRoutes, getYamlUrlTree, UrlNode, getMdSource };
