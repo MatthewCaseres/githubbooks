@@ -1,14 +1,26 @@
 import yaml from 'js-yaml';
 import fs from 'fs';
 import axios from 'axios';
-import { UrlNode } from './types';
+
+export type UrlNode = {
+  type: string;
+  title: string;
+  rawUrl?: string;
+  path?: string;
+  route?: string;
+  ghUrl?: string;
+  name?: string;
+  id?: string;
+  children?: UrlNode[];
+  extension?: string;
+};
 
 export type FlatNode = {
   rawUrl: string;
   ghUrl: string;
   route: string;
   path: string;
-  yamlUrl: string;
+  index: number;
 };
 export type FlatNodes = FlatNode[];
 
@@ -21,7 +33,6 @@ export async function urlTreeFromYaml(location: string, remote: boolean) {
   }
   return yaml.safeLoad(yamlText) as UrlNode;
 }
-
 //this gets the yaml raw url paired up with it's tree representation
 export async function getYamlUrlTree(yamlUrls: string[], remote: boolean) {
   let pathsWithTrees: Record<string, UrlNode> = {};
@@ -30,15 +41,14 @@ export async function getYamlUrlTree(yamlUrls: string[], remote: boolean) {
   }
   return pathsWithTrees;
 }
-
 //this gets the route paired up with all the info you might want about it.
-export async function getRawRoutes(yamlUrl: string, remote: boolean) {
-  let root = await urlTreeFromYaml(yamlUrl, remote);
+export async function getRoutesInfo(root: UrlNode, index: number) {
   let paths: FlatNodes = [];
+  console.log(index);
   function dfs(node: UrlNode) {
     if ('rawUrl' in node) {
       let { rawUrl, ghUrl, route, path } = node;
-      paths.push({ rawUrl, ghUrl, route, path, yamlUrl } as FlatNode);
+      paths.push({ rawUrl, ghUrl, route, path, index } as FlatNode);
     }
     if ('children' in node && node.children) {
       for (let child of node.children) {
@@ -53,12 +63,12 @@ export async function getRawRoutes(yamlUrl: string, remote: boolean) {
   }, {});
 }
 
-export async function getAllRawRoutes(yamlUrls: string[], remote: boolean) {
+export async function getAllRoutesInfo(urlTrees: UrlNode[]) {
   let allRawRoutes: Record<string, FlatNode> = {};
-  for (let yamlUrl of yamlUrls) {
+  for (let i = 0; i < urlTrees.length; i++) {
     allRawRoutes = {
       ...allRawRoutes,
-      ...(await getRawRoutes(yamlUrl, remote)),
+      ...(await getRoutesInfo(urlTrees[i], i)),
     };
   }
   return allRawRoutes;

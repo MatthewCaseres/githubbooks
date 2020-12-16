@@ -2333,6 +2333,16 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
   integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
 
+"@types/git-url-parse@^9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@types/git-url-parse/-/git-url-parse-9.0.0.tgz#aac1315a44fa4ed5a52c3820f6c3c2fb79cbd12d"
+  integrity sha512-kA2RxBT/r/ZuDDKwMl+vFWn1Z0lfm1/Ik6Qb91wnSzyzCDa/fkM8gIOq6ruB7xfr37n6Mj5dyivileUVKsidlg==
+
+"@types/github-slugger@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@types/github-slugger/-/github-slugger-1.3.0.tgz#16ab393b30d8ae2a111ac748a015ac05a1fc5524"
+  integrity sha512-J/rMZa7RqiH/rT29TEVZO4nBoDP9XJOjnbbIofg7GQKs4JIduEO3WLpte+6WeUz/TcrXKlY+bM7FYrp8yFB+3g==
+
 "@types/glob-base@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@types/glob-base/-/glob-base-0.3.0.tgz#a581d688347e10e50dd7c17d6f2880a10354319d"
@@ -6588,7 +6598,22 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-github-slugger@^1.0.0:
+git-up@^4.0.0:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/git-up/-/git-up-4.0.2.tgz#10c3d731051b366dc19d3df454bfca3f77913a7c"
+  integrity sha512-kbuvus1dWQB2sSW4cbfTeGpCMd8ge9jx9RKnhXhuJ7tnvT+NIrTVfYZxjtflZddQYcmdOTlkAcjmx7bor+15AQ==
+  dependencies:
+    is-ssh "^1.3.0"
+    parse-url "^5.0.0"
+
+git-url-parse@^11.4.3:
+  version "11.4.3"
+  resolved "https://registry.yarnpkg.com/git-url-parse/-/git-url-parse-11.4.3.tgz#1610284edf1f14964180f5b3399ec68b692cfd87"
+  integrity sha512-LZTTk0nqJnKN48YRtOpR8H5SEfp1oM2tls90NuZmBxN95PnCvmuXGzqQ4QmVirBgKx2KPYfPGteX3/raWjKenQ==
+  dependencies:
+    git-up "^4.0.0"
+
+github-slugger@^1.0.0, github-slugger@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/github-slugger/-/github-slugger-1.3.0.tgz#9bd0a95c5efdfc46005e82a906ef8e2a059124c9"
   integrity sha512-gwJScWVNhFYSRDvURk/8yhcFBee6aFjye2a7Lhb2bUyRulpIoek9p0I9Kt7PT67d/nUlZbFu8L9RLiA0woQN8Q==
@@ -7703,6 +7728,13 @@ is-set@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/is-set/-/is-set-2.0.1.tgz#d1604afdab1724986d30091575f54945da7e5f43"
   integrity sha512-eJEzOtVyenDs1TMzSQ3kU3K+E0GUS9sno+F0OBT97xsgcJsF9nXMBtkT9/kut5JEpM7oL7X/0qxR17K3mcwIAA==
+
+is-ssh@^1.3.0:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/is-ssh/-/is-ssh-1.3.2.tgz#a4b82ab63d73976fd8263cceee27f99a88bdae2b"
+  integrity sha512-elEw0/0c2UscLrNG+OAorbP539E3rhliKPg+hDMWN9VwrDXfYK+4PBEykDPfxlYYtQvl84TascnQyobfQLHEhQ==
+  dependencies:
+    protocols "^1.1.0"
 
 is-stream@^1.0.1, is-stream@^1.1.0:
   version "1.1.0"
@@ -9366,7 +9398,7 @@ normalize-range@^0.1.2:
   resolved "https://registry.yarnpkg.com/normalize-range/-/normalize-range-0.1.2.tgz#2d10c06bdfd312ea9777695a4d28439456b75942"
   integrity sha1-LRDAa9/TEuqXd2laTShDlFa3WUI=
 
-normalize-url@^3.0.0:
+normalize-url@^3.0.0, normalize-url@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
@@ -9833,6 +9865,24 @@ parse-json@^5.0.0:
     error-ex "^1.3.1"
     json-parse-even-better-errors "^2.3.0"
     lines-and-columns "^1.1.6"
+
+parse-path@^4.0.0:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/parse-path/-/parse-path-4.0.2.tgz#ef14f0d3d77bae8dd4bc66563a4c151aac9e65aa"
+  integrity sha512-HSqVz6iuXSiL8C1ku5Gl1Z5cwDd9Wo0q8CoffdAghP6bz8pJa1tcMC+m4N+z6VAS8QdksnIGq1TB6EgR4vPR6w==
+  dependencies:
+    is-ssh "^1.3.0"
+    protocols "^1.4.0"
+
+parse-url@^5.0.0:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/parse-url/-/parse-url-5.0.2.tgz#856a3be1fcdf78dc93fc8b3791f169072d898b59"
+  integrity sha512-Czj+GIit4cdWtxo3ISZCvLiUjErSo0iI3wJ+q9Oi3QuMYTI6OZu+7cewMWZ+C1YAnKhYTk6/TLuhIgCypLthPA==
+  dependencies:
+    is-ssh "^1.3.0"
+    normalize-url "^3.3.0"
+    parse-path "^4.0.0"
+    protocols "^1.4.0"
 
 parse5@5.1.0:
   version "5.1.0"
@@ -10552,6 +10602,11 @@ property-information@^5.0.0, property-information@^5.3.0:
   integrity sha512-YUHSPk+A30YPv+0Qf8i9Mbfe/C0hdPXk1s1jPVToV8pk8BQtpw10ct89Eo7OWkutrwqvT0eicAxlOg3dOAu8JA==
   dependencies:
     xtend "^4.0.0"
+
+protocols@^1.1.0, protocols@^1.4.0:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/protocols/-/protocols-1.4.8.tgz#48eea2d8f58d9644a4a32caae5d5db290a075ce8"
+  integrity sha512-IgjKyaUSjsROSO8/D49Ab7hP8mJgTYcqApOqdPhLoPxAplXmkp+zRvsrSQjFn5by0rhm4VH0GAUELIPpx7B1yg==
 
 proxy-addr@~2.0.5:
   version "2.0.6"
