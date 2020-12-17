@@ -1,15 +1,15 @@
-import unified from 'unified'
-import markdown from 'remark-parse'
-import GithubSlugger from 'github-slugger'
-import visit from 'unist-util-visit'
-import { read } from 'to-vfile'
-import yaml from 'js-yaml'
-import axios from 'axios'
+import unified from 'unified';
+import markdown from 'remark-parse';
+import GithubSlugger from 'github-slugger';
+import visit from 'unist-util-visit';
+import { read } from 'to-vfile';
+import yaml from 'js-yaml';
+import axios from 'axios';
 
 export default async function getContentNodes(fileNode: any, local: any) {
   var slugger = new GithubSlugger();
   const routePrefix = fileNode.route;
-  let file: string
+  let file: string;
   if (!local) {
     file = await (await axios.get(fileNode.rawUrl)).data;
   } else {
@@ -20,7 +20,7 @@ export default async function getContentNodes(fileNode: any, local: any) {
     .parse(file);
   let headers: any[] = [];
   visit(tree, 'heading', (node: any) => {
-    const idRegex = /_id=([0-9A-Fa-f\-]*)\s*$/;
+    const idRegex = /_id=([0-9A-Fa-f-]*)\s*$/;
     if (node.depth === 2 && !node.children[0].value.includes('_ignore')) {
       let headerMatch = node.children[0].value.match(idRegex);
       let header: any = {};
@@ -52,4 +52,4 @@ export default async function getContentNodes(fileNode: any, local: any) {
     ? [{ type: 'heading', title: 'Problems', children }]
     : [];
   return [...headers, ...problems];
-};
+}

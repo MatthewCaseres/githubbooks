@@ -1,2 +1,2 @@
-import summariesToTrees from "./summariesToTrees"
-export {summariesToTrees}
+import summariesToTrees from './summariesToTrees';
+export { summariesToTrees };

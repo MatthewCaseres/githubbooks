@@ -1,12 +1,12 @@
-import getContentNodes from './getContentNodes'
-import getGhRawUrl from './getGhRawUrl'
-import unified from 'unified'
-import markdown from 'remark-parse'
-import path from 'path'
-import axios from 'axios'
-import { read } from 'to-vfile'
+import getContentNodes from './getContentNodes';
+import getGhRawUrl from './getGhRawUrl';
+import unified from 'unified';
+import markdown from 'remark-parse';
+import path from 'path';
+import axios from 'axios';
+import { read } from 'to-vfile';
 
-const summaryToUrlTree: (config:any, rawProvider:any) => any = async (
+const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
   { url, localPath, removeHeadings, local },
   rawProvider
 ) => {
@@ -44,7 +44,10 @@ const summaryToUrlTree: (config:any, rawProvider:any) => any = async (
   const dfsRemoveListItem = (node: any) => {
     if (node.type === 'list') {
       node.children = node.children.reduce(
-        (childsChildrens: any, liNode: any) => [...childsChildrens, ...liNode.children],
+        (childsChildrens: any, liNode: any) => [
+          ...childsChildrens,
+          ...liNode.children,
+        ],
         []
       );
       for (let child of node.children) {
@@ -106,4 +109,4 @@ const summaryToUrlTree: (config:any, rawProvider:any) => any = async (
   return tree;
 };
 
-export default summaryToUrlTree
+export default summaryToUrlTree;

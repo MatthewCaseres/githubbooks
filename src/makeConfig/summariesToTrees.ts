@@ -1,4 +1,3 @@
-import yaml from 'js-yaml';
 import fs from 'fs';
 import summaryToUrlTree from './summaryToUrlTree';
 
@@ -23,7 +22,7 @@ export default async function summariesToTrees(
   Promise.all(
     configs.map(config => summaryToUrlTree(config, rawProvider))
   ).then(values => {
-    fs.writeFile(`./urlTree.yml`, yaml.safeDump(values), err => {
+    fs.writeFile(`./bookConfig.json`, JSON.stringify(values), err => {
       if (err) {
         console.log(err);
       }

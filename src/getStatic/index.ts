@@ -35,7 +35,7 @@ export async function getAllRoutesInfo(urlTrees: UrlNode[]) {
 }
 
 //this gets the yaml raw url paired up with it's tree representation
-export async function getYamlUrlTree(location: string) { 
+export async function getYamlUrlTree(location: string) {
   return fs.readFileSync(location, 'utf8');
 }
 //this gets the route paired up with all the info you might want about it.
@@ -58,8 +58,6 @@ export async function getRoutesInfo(root: UrlNode, index: number) {
     return a;
   }, {});
 }
-
-
 
 export async function getMdSource(
   route: string,

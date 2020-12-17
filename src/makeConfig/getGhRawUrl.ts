@@ -10,6 +10,6 @@ export default function getGhRawUrl(gitHubUrl: string, rawProvider: string) {
     directory + '/'}`;
   const rawPrefix = `${rawProvider}${full_name}/${ref}/${directory &&
     directory + '/'}`;
-  const rawSummaryUrl = `${rawPrefix}${filepath}`
+  const rawSummaryUrl = `${rawPrefix}${filepath}`;
   return { ghPrefix, rawPrefix, full_name, rawSummaryUrl };
 }
