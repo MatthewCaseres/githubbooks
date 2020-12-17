@@ -1,4 +1,4 @@
-import summariesToTrees from '../src/prebuild/summariesToTrees';
+import summariesToTrees from '../src/makeConfig/summariesToTrees';
 
 test('adds 1 + 2 to equal 3', async () => {
   await summariesToTrees([

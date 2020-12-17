@@ -1,6 +1,6 @@
-import yaml from "js-yaml"
-import fs from "fs"
-import summaryToUrlTree from "./summaryToUrlTree"
+import yaml from 'js-yaml';
+import fs from 'fs';
+import summaryToUrlTree from './summaryToUrlTree';
 
 type LocalConfig = {
   local: true;
@@ -16,12 +16,17 @@ type RemoteConfig = {
 export type Config = LocalConfig | RemoteConfig;
 export type AllConfigs = Config[];
 
-export default async function summariesToTrees(configs: AllConfigs) {
-  Promise.all(configs.map((config) => summaryToUrlTree(config))).then((values) => {
+export default async function summariesToTrees(
+  configs: AllConfigs,
+  rawProvider = 'https://gitcdn.xyz/repo/'
+) {
+  Promise.all(
+    configs.map(config => summaryToUrlTree(config, rawProvider))
+  ).then(values => {
     fs.writeFile(`./urlTree.yml`, yaml.safeDump(values), err => {
       if (err) {
         console.log(err);
       }
     });
-  })
+  });
 }

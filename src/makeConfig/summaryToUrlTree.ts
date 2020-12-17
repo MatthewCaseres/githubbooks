@@ -6,9 +6,9 @@ import path from 'path'
 import axios from 'axios'
 import { read } from 'to-vfile'
 
-const summaryToUrlTree: (config:any, rawProvider?:any) => any = async (
+const summaryToUrlTree: (config:any, rawProvider:any) => any = async (
   { url, localPath, removeHeadings, local },
-  rawProvider = 'https://gitcdn.xyz/repo/'
+  rawProvider
 ) => {
   const { ghPrefix, rawPrefix, full_name, rawSummaryUrl } = getGhRawUrl(
     url,

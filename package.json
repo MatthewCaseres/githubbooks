@@ -30,7 +30,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "edtech",
+  "name": "next-mdx-books",
   "author": "Matthew Caseres",
   "module": "dist/edtech.esm.js",
   "size-limit": [
