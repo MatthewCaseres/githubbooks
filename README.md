@@ -1,7 +1,7 @@
 # Next-MDX-Books
 
 ## Purpose/Design
-This package generates a tree where nodes contain urls that serve markdown/MDX files from https://raw.githubusercontent.com/ (or https://gitcdn.xyz/). 
+This package generates/consumes a tree where nodes contain urls that serve markdown/MDX files. We refer to this as the URL tree.
 
 The URL tree can be generated from a table of contents written in markdown, compatible with existing GitBooks. Utility functions are provided to reformat the URL tree to play well with Next.js functions getStaticPaths and getStaticProps so that you can serve all the files specified in your table of contents.
 
@@ -241,6 +241,3 @@ function Post({ urlTree, mdxSource, ghUrl }: { urlTree: UrlNode; mdxSource: Sour
   );
 }
 ```
-
-## Summary
-This package parses GitBook compatible markdown to create a configuration file and uses the configuration file to fetch markdown and metadata to display on a dynamic route in Next.js.
