@@ -28,6 +28,7 @@ function getAllRoutesInfo(urlTrees: UrlNode[]): Promise<Record<string, FlatNode>
   //...
 }
 ```
+## getStaticPaths
 We can use this `allRoutesInfo` object's keys to specify the dynamic routes to create in getStaticPaths for a file named [...id].tsx.
 ```js
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -46,6 +47,7 @@ export const getStaticPaths = async () => {
   };
 };
 ```
+##getStaticProps
 In getStaticProps we can grab some information to pass down to our page. Here, we grab the `urlTree` so that each page can display a table of contents in the side navigation. We get the GitHub url, `ghUrl`, to add an 'edit this page' feature. 
 ```js
 import { getMdSource, getAllRoutesInfo } from "next-mdx-books";
@@ -78,4 +80,9 @@ function Post({ urlTree, mdxSource, ghUrl }: { urlTree: UrlNode; mdxSource: Sour
       </SideBarProvider>
   );
 }
+```
+##Local Development
+If you generated the local paths for a file as discussed in the "Generate Configurations" document, then you will be able to pass `false` as the third argument of `getMdSource` to build your pages from the local files for all local books.
+```js
+const source = await getMdSource(stringRoute, allRoutesInfo, false);
 ```
