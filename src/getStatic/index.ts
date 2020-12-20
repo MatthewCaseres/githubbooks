@@ -67,10 +67,10 @@ export async function getMdSource(
   let rawUrl = allRawRoutes[route].rawUrl;
   let localPath = allRawRoutes[route].path;
   let source: string;
-  if (remote) {
-    source = await (await axios.get(rawUrl)).data;
-  } else {
+  if (!remote && localPath !== undefined) {
     source = fs.readFileSync(localPath, 'utf8');
+  } else {
+    source = await(await axios.get(rawUrl)).data;
   }
   return source;
 }
