@@ -1,5 +1,5 @@
 {
-  "version": "0.2.3",
+  "version": "0.2.4",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -12,9 +12,9 @@
     "node": ">=10"
   },
   "repository": {
-  "type": "git",
-  "url": "https://github.com/Open-EdTech/next-mdx-books.git"
-},
+    "type": "git",
+    "url": "https://github.com/Open-EdTech/next-mdx-books.git"
+  },
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
