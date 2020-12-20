@@ -1,5 +1,6 @@
 # Next-MDX-Books
 
+This documentation is best viewed on the website for the docs: https://www.openedtech.dev/Open-EdTech/next-mdx-books/about.md
 ## Purpose/Design
 This package generates/consumes a tree where nodes contain urls that serve markdown/MDX files. We refer to this as the URL tree.
 

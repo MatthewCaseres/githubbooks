@@ -3,6 +3,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "homepage": "https://www.openedtech.dev/Open-EdTech/next-mdx-books/about.md",
   "files": [
     "dist",
     "src"
@@ -10,6 +11,10 @@
   "engines": {
     "node": ">=10"
   },
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/Open-EdTech/next-mdx-books.git"
+},
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
