@@ -17,7 +17,7 @@ export type AllConfigs = Config[];
 
 export default async function summariesToTrees(
   configs: AllConfigs,
-  rawProvider = 'https://gitcdn.xyz/repo/'
+  rawProvider = 'https://raw.githubusercontent.com'
 ) {
   Promise.all(
     configs.map(config => summaryToUrlTree(config, rawProvider))
