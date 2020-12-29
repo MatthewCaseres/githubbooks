@@ -15,15 +15,9 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
     rawProvider
   );
   if (!local && !url) {
-    console.log(
-      `File with url ${url} and path ${localPath} has no url for remote loading`
-    );
-    return;
+    throw new Error(`File with has no url for remote loading`)
   } else if (local && !localPath) {
-    console.log(
-      `File with url ${url} and path ${localPath} has no local path for local loading`
-    );
-    return;
+    throw new Error(`File has no local path for local loading`)
   }
 
   let file;
