@@ -12,5 +12,3 @@ export default function getGhRawUrl(gitHubUrl: string, rawProvider: string) {
   const rawSummaryUrl = `${rawProvider}${pathname.replace('blob/', '')}`;
   return { ghPrefix, rawPrefix, full_name, rawSummaryUrl };
 }
-
-

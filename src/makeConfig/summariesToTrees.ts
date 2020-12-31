@@ -2,10 +2,10 @@ import fs from 'fs';
 import summaryToUrlTree from './summaryToUrlTree';
 
 export type Config = {
-  url: string,
-  localPath?: string,
-  removeHeadings?: string
-}
+  url: string;
+  localPath?: string;
+  removeHeadings?: string;
+};
 export type AllConfigs = Config[];
 
 export default async function summariesToTrees(

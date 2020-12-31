@@ -70,7 +70,7 @@ export async function getMdSource(
   if (!remote && localPath !== undefined) {
     source = fs.readFileSync(localPath, 'utf8');
   } else {
-    source = await(await axios.get(rawUrl)).data;
+    source = await (await axios.get(rawUrl)).data;
   }
   return source;
 }

@@ -15,7 +15,7 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
     rawProvider
   );
   if (!url) {
-    throw new Error(`File with has no url for remote loading`)
+    throw new Error(`File with has no url for remote loading`);
   }
 
   let file;
@@ -26,11 +26,11 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
   }
 
   const root = unified()
-  .use(markdown)
-  .parse(file) as any
-  const title = root.children[0].children[0].value
+    .use(markdown)
+    .parse(file) as any;
+  const title = root.children[0].children[0].value;
   const tree = root.children[1];
-  tree.title = title
+  tree.title = title;
 
   delete tree.spread;
   delete tree.ordered;
@@ -101,7 +101,7 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
   };
   await dfsAddContents(tree);
 
-  tree.type = 'directory'
+  tree.type = 'directory';
   return tree;
 };
 
