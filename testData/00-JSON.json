@@ -1,0 +1,44 @@
+{
+  "type": "directory",
+  "children": [
+    {
+      "type": "file",
+      "route": "Open-EdTech/next-mdx-books/file1.md",
+      "title": "lol1",
+      "rawUrl": "https://raw.githubusercontent.com/Open-EdTech/next-mdx-books/main/testData/file1.md",
+      "ghUrl": "https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/file1.md",
+      "children": [
+        {
+          "title": "h2 1",
+          "route": "Open-EdTech/next-mdx-books/file1.md/#h2-1",
+          "type": "heading"
+        },
+        {
+          "title": "h2 2",
+          "route": "Open-EdTech/next-mdx-books/file1.md/#h2-2",
+          "type": "heading"
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "route": "Open-EdTech/next-mdx-books/file2.md",
+      "title": "lol2",
+      "rawUrl": "https://raw.githubusercontent.com/Open-EdTech/next-mdx-books/main/testData/file2.md",
+      "ghUrl": "https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/file2.md",
+      "children": [
+        {
+          "title": "h2 1",
+          "route": "Open-EdTech/next-mdx-books/file2.md/#h2-1",
+          "type": "heading"
+        },
+        {
+          "title": "h2 2",
+          "route": "Open-EdTech/next-mdx-books/file2.md/#h2-2",
+          "type": "heading"
+        }
+      ]
+    }
+  ],
+  "title": "Summary"
+}
