@@ -7,29 +7,31 @@ import axios from 'axios';
 import { read } from 'to-vfile';
 
 const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
-  { url, localPath, removeHeadings, local },
+  { url, localPath, removeHeadings },
   rawProvider
 ) => {
   const { ghPrefix, rawPrefix, full_name, rawSummaryUrl } = getGhRawUrl(
     url,
     rawProvider
   );
-  if (!local && !url) {
+  if (!url) {
     throw new Error(`File with has no url for remote loading`)
-  } else if (local && !localPath) {
-    throw new Error(`File has no local path for local loading`)
   }
 
   let file;
-  if (!local) {
+  if (!localPath) {
     file = await (await axios.get(rawSummaryUrl)).data;
   } else {
     file = await read(localPath);
   }
 
-  let tree = (unified()
-    .use(markdown)
-    .parse(file) as any).children[1];
+  const root = unified()
+  .use(markdown)
+  .parse(file) as any
+  const title = root.children[0].children[0].value
+  const tree = root.children[1];
+  tree.title = title
+
   delete tree.spread;
   delete tree.ordered;
   delete tree.start;
@@ -74,19 +76,17 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
     }
   };
   dfsRemoveList(tree);
-  tree.title = 'GitBook';
-  tree.type = 'directory';
 
   const dfsAddContents = async (node: any) => {
     if (node.route && node.type === 'file') {
-      if (local) {
+      if (localPath !== undefined) {
         node.path = path.join(path.parse(localPath).dir, node.route);
       }
       node.rawUrl = rawPrefix + node.route;
       node.ghUrl = ghPrefix + node.route;
       node.route = full_name + '/' + node.route;
       if (!removeHeadings) {
-        let contentNodes = await getContentNodes(node, local);
+        let contentNodes = await getContentNodes(node, localPath !== undefined);
         if (contentNodes.length) {
           node.children = contentNodes;
         }
@@ -100,6 +100,8 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
     return node;
   };
   await dfsAddContents(tree);
+
+  tree.type = 'directory'
   return tree;
 };
 

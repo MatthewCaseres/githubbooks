@@ -6,11 +6,11 @@ import { read } from 'to-vfile';
 import yaml from 'js-yaml';
 import axios from 'axios';
 
-export default async function getContentNodes(fileNode: any, local: any) {
+export default async function getContentNodes(fileNode: any, isLocal: boolean) {
   var slugger = new GithubSlugger();
   const routePrefix = fileNode.route;
   let file: string;
-  if (!local) {
+  if (!isLocal) {
     file = await (await axios.get(fileNode.rawUrl)).data;
   } else {
     file = await read(fileNode.path);
