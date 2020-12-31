@@ -1,4 +1,4 @@
 # Summary
 
-* [lol](file1.md)
-* [lo2](file2.md)
+* [lol1](file1.md)
+* [lol2](file2.md)
