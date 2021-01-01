@@ -102,15 +102,15 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
   await dfsAddContents(tree);
 
   const dfsAddPaths = (node: any, treePath: number[]) => {
-    node.treePath = treePath
+    node.treePath = treePath;
     if (node.children) {
       for (let i = 0; i < node.children.length; i++) {
-        let newPath = [...treePath, i]
-        dfsAddPaths(node.children[i], newPath)
+        let newPath = [...treePath, i];
+        dfsAddPaths(node.children[i], newPath);
       }
     }
-  }
-  dfsAddPaths(tree, [])
+  };
+  dfsAddPaths(tree, []);
 
   tree.type = 'directory';
   return tree;

@@ -4,7 +4,7 @@ import axios from 'axios';
 export type UrlNode = {
   type: string;
   title: string;
-  treePath: readonly number[],
+  treePath: readonly number[];
   rawUrl?: string;
   path?: string;
   route?: string;
@@ -30,7 +30,7 @@ export function getAllRoutesInfo(urlTrees: UrlNode[]) {
   for (let i = 0; i < urlTrees.length; i++) {
     allRawRoutes = {
       ...allRawRoutes,
-      ...(getRoutesInfo(urlTrees[i], i)),
+      ...getRoutesInfo(urlTrees[i], i),
     };
   }
   return allRawRoutes;
