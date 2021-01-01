@@ -106,7 +106,7 @@ export default function summariesToTrees(configs: AllConfigs, rawProvider?: stri
 The second positional argument if not provided defaults to loading markdown from https://gitcdn.xyz/, you can override it to load from https://raw.githubusercontent.com/ at the risk of rate limiting (I have had no problems with this so far).
 
 ## local development and localPath
-We support loading files locally so you don't have to push commits to GitHub to view your book. Enable local development by passing `local: true` along with the path to the location of your summary file.
+We support loading files locally so you don't have to push commits to GitHub to view your book. Enable local development by passing `localPath` to your configuration. The URL tree will automatically be constructed with local paths.
 
 This script
 ```js
@@ -146,3 +146,4 @@ produces this:
           },
           //...
 ```
+Even though you have generated the local paths you will have to enable local development when consuming the files. Local development is off by default.
