@@ -4,7 +4,7 @@ import axios from 'axios';
 export type UrlNode = {
   type: string;
   title: string;
-  treePath: number[],
+  treePath: readonly number[],
   rawUrl?: string;
   path?: string;
   route?: string;

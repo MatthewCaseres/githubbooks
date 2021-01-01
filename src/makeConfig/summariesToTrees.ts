@@ -4,7 +4,7 @@ import summaryToUrlTree from './summaryToUrlTree';
 export type Config = {
   url: string;
   localPath?: string;
-  removeHeadings?: string;
+  removeHeadings?: boolean;
 };
 export type AllConfigs = Config[];
 
