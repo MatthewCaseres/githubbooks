@@ -1,19 +1,31 @@
 {
   "type": "directory",
+  "treePath": [],
   "children": [
     {
       "type": "file",
+      "treePath": [
+        0
+      ],
       "route": "Open-EdTech/next-mdx-books/file1.md",
       "title": "lol1",
       "rawUrl": "https://raw.githubusercontent.com/Open-EdTech/next-mdx-books/main/testData/file1.md",
       "ghUrl": "https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/file1.md",
       "children": [
         {
+          "treePath": [
+            0,
+            0
+          ],
           "title": "h2 1",
           "route": "Open-EdTech/next-mdx-books/file1.md/#h2-1",
           "type": "heading"
         },
         {
+          "treePath": [
+            0,
+            1
+          ],
           "title": "h2 2",
           "route": "Open-EdTech/next-mdx-books/file1.md/#h2-2",
           "type": "heading"
@@ -21,6 +33,9 @@
       ]
     },
     {
+      "treePath": [
+        1
+      ],
       "type": "file",
       "route": "Open-EdTech/next-mdx-books/file2.md",
       "title": "lol2",
@@ -28,11 +43,19 @@
       "ghUrl": "https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/file2.md",
       "children": [
         {
+          "treePath": [
+            1,
+            0
+          ],
           "title": "h2 1",
           "route": "Open-EdTech/next-mdx-books/file2.md/#h2-1",
           "type": "heading"
         },
         {
+          "treePath": [
+            1,
+            1
+          ],
           "title": "h2 2",
           "route": "Open-EdTech/next-mdx-books/file2.md/#h2-2",
           "type": "heading"

@@ -4,6 +4,7 @@ import axios from 'axios';
 export type UrlNode = {
   type: string;
   title: string;
+  treePath: number[],
   rawUrl?: string;
   path?: string;
   route?: string;
@@ -15,6 +16,7 @@ export type UrlNode = {
 };
 
 export type FlatNode = {
+  treePath: number[];
   rawUrl: string;
   ghUrl: string;
   route: string;
@@ -23,12 +25,12 @@ export type FlatNode = {
 };
 export type FlatNodes = FlatNode[];
 
-export async function getAllRoutesInfo(urlTrees: UrlNode[]) {
+export function getAllRoutesInfo(urlTrees: UrlNode[]) {
   let allRawRoutes: Record<string, FlatNode> = {};
   for (let i = 0; i < urlTrees.length; i++) {
     allRawRoutes = {
       ...allRawRoutes,
-      ...(await getRoutesInfo(urlTrees[i], i)),
+      ...(getRoutesInfo(urlTrees[i], i)),
     };
   }
   return allRawRoutes;
@@ -39,12 +41,12 @@ export async function getYamlUrlTree(location: string) {
   return fs.readFileSync(location, 'utf8');
 }
 //this gets the route paired up with all the info you might want about it.
-export async function getRoutesInfo(root: UrlNode, index: number) {
+export function getRoutesInfo(root: UrlNode, index: number) {
   let paths: FlatNodes = [];
   function dfs(node: UrlNode) {
     if ('rawUrl' in node) {
-      let { rawUrl, ghUrl, route, path } = node;
-      paths.push({ rawUrl, ghUrl, route, path, index } as FlatNode);
+      let { rawUrl, ghUrl, route, path, treePath } = node;
+      paths.push({ rawUrl, ghUrl, route, path, index, treePath } as FlatNode);
     }
     if ('children' in node && node.children) {
       for (let child of node.children) {
