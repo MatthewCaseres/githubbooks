@@ -35,21 +35,25 @@ export default async function getContentNodes(fileNode: any, isLocal: boolean) {
       headers.push(header);
     }
   });
-  let children: any[] = [];
+  let problems: any[] = [];
+  let problemCount = 1
   visit(tree, 'code', (node: any) => {
     if (node.lang?.includes('edtech')) {
       let problemData = yaml.safeLoad(node.value) as any;
+      if(!problemData.id){
+        throw new Error("There is no ID on your edtech component")
+      }
       let problem = {
         type: node.lang,
-        ...(problemData.id ? { id: problemData.id } : {}),
+        title: `problem ${problemCount}`,
+        id: problemData.id,
+        route: routePrefix + '/#' + problemData.id
       };
+      problemCount += 1
       if (problem.id) {
-        children.push(problem);
+        problems.push(problem);
       }
     }
   });
-  let problems = children.length
-    ? [{ type: 'heading', title: 'Problems', children }]
-    : [];
   return [...headers, ...problems];
 }
