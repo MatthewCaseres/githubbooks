@@ -50,9 +50,14 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
         dfsRemoveListItem(child);
       }
     } else if (node.type === 'paragraph') {
-      node.type = 'file';
-      node.route = node.children[0].url;
-      node.title = node.children[0].children[0].value;
+      if(node.children[0].type === "text") {
+        node.type = "directory"
+        node.title = node.children[0].value
+      } else if (node.children[0].type === 'link') {
+        node.type = 'file';
+        node.route = node.children[0].url;
+        node.title = node.children[0].children[0].value;
+      }
       delete node.children;
       delete node.position;
     }
@@ -64,7 +69,7 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
     let i = 0;
     while (i < children.length) {
       if (
-        children[i].type === 'file' &&
+        ['file', 'directory'].includes(children[i].type) &&
         i < children.length - 1 &&
         children[i + 1].type === 'list'
       ) {
