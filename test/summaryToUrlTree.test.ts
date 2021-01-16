@@ -1,4 +1,4 @@
-import summaryToUrlTree from '../src/makeConfig/summaryToUrlTree';
+import {summaryToUrlTree} from '../src/makeConfig/summaryToUrlTree';
 import JSON00 from '../testData/00-JSON.json';
 import path from 'path';
 import fs from 'fs';
