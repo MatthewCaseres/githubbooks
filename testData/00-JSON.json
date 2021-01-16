@@ -1,67 +1,77 @@
 {
   "type": "directory",
-  "treePath": [],
   "children": [
     {
-      "type": "file",
-      "treePath": [
-        0
-      ],
-      "route": "Open-EdTech/next-mdx-books/file1.md",
-      "title": "lol1",
-      "rawUrl": "https://raw.githubusercontent.com/Open-EdTech/next-mdx-books/main/testData/file1.md",
-      "ghUrl": "https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/file1.md",
+      "type": "directory",
+      "title": "directory",
       "children": [
         {
-          "treePath": [
-            0,
-            0
+          "type": "file",
+          "route": "Open-EdTech/next-mdx-books/file1.md",
+          "title": "file1",
+          "path": "/Users/matthewcaseres/Documents/GitHub/next-mdx-books/testData/file1.md",
+          "rawUrl": "https://raw.githubusercontent.com/Open-EdTech/next-mdx-books/main/testData/file1.md",
+          "ghUrl": "https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/file1.md",
+          "content": [
+            {
+              "title": "h2 1",
+              "route": "Open-EdTech/next-mdx-books/file1.md/#h2-1",
+              "type": "heading"
+            },
+            {
+              "title": "h2 2",
+              "route": "Open-EdTech/next-mdx-books/file1.md/#h2-2",
+              "type": "heading"
+            }
           ],
-          "title": "h2 1",
-          "route": "Open-EdTech/next-mdx-books/file1.md/#h2-1",
-          "type": "heading"
-        },
-        {
-          "treePath": [
-            0,
-            1
-          ],
-          "title": "h2 2",
-          "route": "Open-EdTech/next-mdx-books/file1.md/#h2-2",
-          "type": "heading"
+          "treePath": [0, 0]
         }
-      ]
-    },
-    {
-      "treePath": [
-        1
       ],
+      "treePath": [0]
+    },
+    { "type": "separator", "title": "str", "treePath": [1] },
+    {
       "type": "file",
       "route": "Open-EdTech/next-mdx-books/file2.md",
-      "title": "lol2",
+      "title": "file2",
+      "path": "/Users/matthewcaseres/Documents/GitHub/next-mdx-books/testData/file2.md",
       "rawUrl": "https://raw.githubusercontent.com/Open-EdTech/next-mdx-books/main/testData/file2.md",
       "ghUrl": "https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/file2.md",
-      "children": [
+      "content": [
         {
-          "treePath": [
-            1,
-            0
-          ],
           "title": "h2 1",
           "route": "Open-EdTech/next-mdx-books/file2.md/#h2-1",
           "type": "heading"
         },
         {
-          "treePath": [
-            1,
-            1
-          ],
           "title": "h2 2",
           "route": "Open-EdTech/next-mdx-books/file2.md/#h2-2",
           "type": "heading"
         }
-      ]
+      ],
+      "treePath": [2]
+    },
+    {
+      "type": "file",
+      "route": "Open-EdTech/next-mdx-books/testData/file2.md",
+      "title": "fullUrl",
+      "ghUrl": "https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/file2.md",
+      "rawUrl": "https://raw.githubusercontent.com/Open-EdTech/next-mdx-books/main/testData/file2.md",
+      "content": [
+        {
+          "title": "h2 1",
+          "route": "Open-EdTech/next-mdx-books/testData/file2.md/#h2-1",
+          "type": "heading"
+        },
+        {
+          "title": "h2 2",
+          "route": "Open-EdTech/next-mdx-books/testData/file2.md/#h2-2",
+          "type": "heading"
+        }
+      ],
+      "treePath": [3]
     }
   ],
-  "title": "Summary"
+  "title": "Title",
+  "treePath": []
 }

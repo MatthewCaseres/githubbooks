@@ -76,6 +76,7 @@
     "axios": "^0.21.0",
     "git-url-parse": "^11.4.3",
     "github-slugger": "^1.3.0",
+    "gray-matter": "^4.0.2",
     "immer": "^8.0.0",
     "js-yaml": "^3.14.1",
     "remark-parse": "^9.0.0",

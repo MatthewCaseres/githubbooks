@@ -1,4 +1,4 @@
-import getContentNodes from './getContentNodes';
+// import getContentNodes from './getContentNodes';
 import getGhRawUrl from './getGhRawUrl';
 import unified from 'unified';
 import markdown from 'remark-parse';
@@ -6,10 +6,11 @@ import path from 'path';
 import axios from 'axios';
 import { read } from 'to-vfile';
 import gitUrlParse from 'git-url-parse';
+import { Config, UserFunction, TreeNode } from './summariesToTrees';
+import matter from 'gray-matter';
 
-const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
-  { url, localPath, removeHeadings },
-  rawProvider
+const summaryToUrlTree: (config: Config) => any = async (
+  { url, localPath, userFunction, rawProvider = "https://raw.githubusercontent.com"}
 ) => {
   const { ghPrefix, rawPrefix, full_name, rawSummaryUrl } = getGhRawUrl(
     url,
@@ -51,12 +52,15 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
         dfsRemoveListItem(child);
       }
     } else if (node.type === 'paragraph') {
-      if(node.children[0].type === "text") {
-        node.type = "directory"
-        node.title = node.children[0].value
+      if (node.children[0].type === 'text') {
+        node.type = 'directory';
+        node.title = node.children[0].value;
       } else if (node.children[0].type === 'link') {
         node.type = 'file';
         node.route = node.children[0].url;
+        node.title = node.children[0].children[0].value;
+      } else if (node.children[0].type === 'strong') {
+        node.type = 'separator';
         node.title = node.children[0].children[0].value;
       }
       delete node.children;
@@ -85,11 +89,13 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
 
   const dfsAddContents = async (node: any) => {
     if (node.route && node.type === 'file') {
-      if (node.route.startsWith("https://github.com")) {
-        const gh = gitUrlParse(node.route)
-        node.ghUrl = node.route
-        node.route = gh.full_name + '/' + gh.filepath
-        node.rawUrl = gh.href.replace("github.com", "raw.githubusercontent.com").replace("blob/","")
+      if (node.route.startsWith('https://github.com')) {
+        const gh = gitUrlParse(node.route);
+        node.ghUrl = node.route;
+        node.route = gh.full_name + '/' + gh.filepath;
+        node.rawUrl = gh.href
+          .replace('github.com', 'raw.githubusercontent.com')
+          .replace('blob/', '');
       } else {
         //relative path allows support for local development
         if (localPath !== undefined) {
@@ -98,17 +104,6 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
         node.rawUrl = rawPrefix + node.route;
         node.ghUrl = ghPrefix + node.route;
         node.route = full_name + '/' + node.route;
-      }
-      if (!removeHeadings) {
-        node.children?.forEach((child: any) => {
-          if (node.type === "file" && child.type === "file") {
-            throw new Error("Must set removeHeadings: true if files have children nodes")
-          }
-        });
-        let contentNodes = await getContentNodes(node, localPath !== undefined);
-        if (contentNodes.length) {
-          node.children = contentNodes;
-        }
       }
     }
     if (node.children) {
@@ -119,6 +114,32 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
     return node;
   };
   await dfsAddContents(tree);
+
+  const dfsUserFunction = async (node: TreeNode, userFunc: UserFunction) => {
+    let file: string | undefined;
+    if (node.path) {
+      const vfile = await read(node.path as string);
+      file = vfile.toString();
+      console.log();
+    } else if (node.rawUrl) {
+      file = await (await axios.get(node.rawUrl)).data;
+    }
+    if (file) {
+      const { content: md, data: frontMatter } = matter(file);
+      let mdast = unified()
+        .use(markdown)
+        .parse(md);
+      userFunc(node, { mdast, frontMatter });
+    }
+    if (node.children) {
+      for (let child of node.children) {
+        await dfsUserFunction(child, userFunc);
+      }
+    }
+  };
+  if (userFunction) {
+    await dfsUserFunction(tree, userFunction);
+  }
 
   const dfsAddPaths = (node: any, treePath: number[]) => {
     node.treePath = treePath;
