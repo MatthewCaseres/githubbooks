@@ -1,4 +1,6 @@
 # Summary
 
-* [lol1](file1.md)
-* [lol2](file2.md)
+* directory
+  * [file1](file1.md)
+* [file2](file2.md)
+  * [fullUrl](file2.md)

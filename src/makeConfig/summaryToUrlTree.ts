@@ -5,6 +5,7 @@ import markdown from 'remark-parse';
 import path from 'path';
 import axios from 'axios';
 import { read } from 'to-vfile';
+import gitUrlParse from 'git-url-parse';
 
 const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
   { url, localPath, removeHeadings },
@@ -84,12 +85,20 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
 
   const dfsAddContents = async (node: any) => {
     if (node.route && node.type === 'file') {
-      if (localPath !== undefined) {
-        node.path = path.join(path.parse(localPath).dir, node.route);
+      if (node.route.startsWith("https://github.com")) {
+        const gh = gitUrlParse(node.route)
+        node.ghUrl = node.route
+        node.route = gh.full_name + '/' + gh.filepath
+        node.rawUrl = gh.href.replace("github.com", "raw.githubusercontent.com").replace("blob/","")
+      } else {
+        //relative path allows support for local development
+        if (localPath !== undefined) {
+          node.path = path.join(path.parse(localPath).dir, node.route);
+        }
+        node.rawUrl = rawPrefix + node.route;
+        node.ghUrl = ghPrefix + node.route;
+        node.route = full_name + '/' + node.route;
       }
-      node.rawUrl = rawPrefix + node.route;
-      node.ghUrl = ghPrefix + node.route;
-      node.route = full_name + '/' + node.route;
       if (!removeHeadings) {
         let contentNodes = await getContentNodes(node, localPath !== undefined);
         if (contentNodes.length) {
@@ -105,7 +114,7 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
     return node;
   };
   await dfsAddContents(tree);
-
+  console.log('loll')
   const dfsAddPaths = (node: any, treePath: number[]) => {
     node.treePath = treePath;
     if (node.children) {
