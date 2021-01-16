@@ -138,7 +138,6 @@ const summaryToUrlTree: (config: Config) => any = async (
     if (node.path) {
       const vfile = await read(node.path as string);
       file = vfile.toString();
-      console.log();
     } else if (node.rawUrl) {
       file = await (await axios.get(node.rawUrl)).data;
     }
