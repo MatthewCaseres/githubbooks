@@ -27,7 +27,7 @@ export type Config = {
   userFunction?: UserFunction
 };
 
-const summaryToUrlTree: (config: Config) => any = async (
+export const summaryToUrlTree: (config: Config) => any = async (
   { url, localPath, userFunction, rawProvider = "https://raw.githubusercontent.com"}
 ) => {
   const { ghPrefix, rawPrefix, full_name, rawSummaryUrl } = getGhRawUrl(
@@ -172,5 +172,3 @@ const summaryToUrlTree: (config: Config) => any = async (
   tree.type = 'directory';
   return tree;
 };
-
-export default summaryToUrlTree;
