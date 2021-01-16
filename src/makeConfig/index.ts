@@ -1,1 +1,1 @@
-export * from './summariesToTrees'
+export * from './summaryToUrlTree'

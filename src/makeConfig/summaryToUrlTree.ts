@@ -6,8 +6,26 @@ import path from 'path';
 import axios from 'axios';
 import { read } from 'to-vfile';
 import gitUrlParse from 'git-url-parse';
-import { Config, UserFunction, TreeNode } from './summariesToTrees';
 import matter from 'gray-matter';
+
+export type TreeNode = {
+  type: string
+  title: string
+  children?: TreeNode[];
+  path?: string;
+  rawUrl?: string;
+  [key: string]: any;
+};
+export type UserFunction = (
+  tree: TreeNode,
+  fileContents: { mdast: {type: string, [key: string]: any}; frontMatter: {[key: string]: any} }
+) => void;
+export type Config = {
+  url: string;
+  rawProvider?: string;
+  localPath?: string;
+  userFunction?: UserFunction
+};
 
 const summaryToUrlTree: (config: Config) => any = async (
   { url, localPath, userFunction, rawProvider = "https://raw.githubusercontent.com"}
