@@ -1,24 +1,31 @@
-import fs from 'fs';
 import summaryToUrlTree from './summaryToUrlTree';
+import {Node} from 'unist'
 
+export type TreeNode = {
+  type: string
+  title: string
+  children?: TreeNode[];
+  path?: string;
+  rawUrl?: string;
+  [key: string]: any;
+};
+export type UserFunction = (
+  tree: TreeNode,
+  fileContents: { mdast: Node; frontMatter: {[key: string]: any} }
+) => void;
 export type Config = {
   url: string;
+  rawProvider?: string;
   localPath?: string;
-  removeHeadings?: boolean;
+  userFunction?: UserFunction
 };
 export type AllConfigs = Config[];
 
-export default async function summariesToTrees(
+
+export async function summariesToTrees(
   configs: AllConfigs,
-  rawProvider = 'https://raw.githubusercontent.com'
 ) {
-  Promise.all(
-    configs.map(config => summaryToUrlTree(config, rawProvider))
-  ).then(values => {
-    fs.writeFile(`./bookConfig.json`, JSON.stringify(values), err => {
-      if (err) {
-        console.log(err);
-      }
-    });
-  });
+  return Promise.all(
+    configs.map(config => summaryToUrlTree(config))
+  )
 }

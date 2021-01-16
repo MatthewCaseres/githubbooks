@@ -1,15 +1,2 @@
-import {
-  getAllRoutesInfo,
-  getYamlUrlTree,
-  getMdSource,
-  UrlNode,
-} from './getStatic';
-import summariesToTrees from './makeConfig/summariesToTrees';
-
-export {
-  getAllRoutesInfo,
-  getYamlUrlTree,
-  UrlNode,
-  getMdSource,
-  summariesToTrees,
-};
+export * from './makeConfig'
+export * from './getStatic'
