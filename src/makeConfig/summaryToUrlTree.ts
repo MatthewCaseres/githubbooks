@@ -100,6 +100,11 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
         node.route = full_name + '/' + node.route;
       }
       if (!removeHeadings) {
+        node.children?.forEach((child: any) => {
+          if (node.type === "file" && child.type === "file") {
+            throw new Error("Must set removeHeadings: true if files have children nodes")
+          }
+        });
         let contentNodes = await getContentNodes(node, localPath !== undefined);
         if (contentNodes.length) {
           node.children = contentNodes;
@@ -114,7 +119,7 @@ const summaryToUrlTree: (config: any, rawProvider: any) => any = async (
     return node;
   };
   await dfsAddContents(tree);
-  console.log('loll')
+
   const dfsAddPaths = (node: any, treePath: number[]) => {
     node.treePath = treePath;
     if (node.children) {
