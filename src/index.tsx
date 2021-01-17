@@ -1,2 +1,2 @@
-export * from './makeConfig'
-export * from './getStatic'
+export * from './makeConfig';
+export * from './getStatic';

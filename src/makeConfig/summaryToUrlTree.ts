@@ -9,8 +9,8 @@ import gitUrlParse from 'git-url-parse';
 import matter from 'gray-matter';
 
 export type TreeNode = {
-  type: string
-  title: string
+  type: string;
+  title: string;
   children?: TreeNode[];
   path?: string;
   rawUrl?: string;
@@ -18,18 +18,24 @@ export type TreeNode = {
 };
 export type UserFunction = (
   tree: TreeNode,
-  fileContents: { mdast: {type: string, [key: string]: any}; frontMatter: {[key: string]: any} }
+  fileContents: {
+    mdast: { type: string; [key: string]: any };
+    frontMatter: { [key: string]: any };
+  }
 ) => void;
 export type Config = {
   url: string;
   rawProvider?: string;
   localPath?: string;
-  userFunction?: UserFunction
+  userFunction?: UserFunction;
 };
 
-export const summaryToUrlTree: (config: Config) => any = async (
-  { url, localPath, userFunction, rawProvider = "https://raw.githubusercontent.com"}
-) => {
+export const summaryToUrlTree: (config: Config) => any = async ({
+  url,
+  localPath,
+  userFunction,
+  rawProvider = 'https://raw.githubusercontent.com',
+}) => {
   const { ghPrefix, rawPrefix, full_name, rawSummaryUrl } = getGhRawUrl(
     url,
     rawProvider

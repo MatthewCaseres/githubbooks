@@ -7,7 +7,6 @@ import yaml from 'js-yaml';
 import axios from 'axios';
 
 export default async function getContentNodes(fileNode: any) {
-  
   let file: string;
   if (fileNode.path) {
     file = await read(fileNode.path);
@@ -37,20 +36,20 @@ export default async function getContentNodes(fileNode: any) {
     }
   });
   let problems: any[] = [];
-  let problemCount = 1
+  let problemCount = 1;
   visit(tree, 'code', (node: any) => {
     if (node.lang?.includes('edtech')) {
       let problemData = yaml.safeLoad(node.value) as any;
-      if(!problemData.id){
-        throw new Error("There is no ID on your edtech component")
+      if (!problemData.id) {
+        throw new Error('There is no ID on your edtech component');
       }
       let problem = {
         type: node.lang,
         title: `problem ${problemCount}`,
         id: problemData.id,
-        route: routePrefix + '/#' + problemData.id
+        route: routePrefix + '/#' + problemData.id,
       };
-      problemCount += 1
+      problemCount += 1;
       if (problem.id) {
         problems.push(problem);
       }

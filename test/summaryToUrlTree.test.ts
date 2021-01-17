@@ -7,7 +7,7 @@ import GithubSlugger from 'github-slugger';
 import { UserFunction } from '../src';
 
 //Let the user add a function
-const userFunction: UserFunction = (node, { mdast }) => {
+const userFunction: UserFunction = (node, { mdast, frontMatter }) => {
   const routePrefix = node.route;
   var slugger = new GithubSlugger();
   let headers: any[] = [];
@@ -20,15 +20,19 @@ const userFunction: UserFunction = (node, { mdast }) => {
       headers.push(header);
     }
   });
-  node.content = headers;
+  if (headers.length > 0) {
+    node.headers = headers
+  }
+  if( Object.keys(frontMatter).length > 0) {
+    node.frontMatter = frontMatter
+  }
 };
 
 test('Constructs valid URL tree', async () => {
-  const localData = path.join(__dirname, '..', 'testData', 'TOC.md');
   const result = await summaryToUrlTree({
     url:
       'https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/TOC.md',
-    localPath: localData,
+    localPath: path.join(__dirname, '..', 'testData', 'TOC.md'),
     userFunction: userFunction,
     rawProvider: 'https://raw.githubusercontent.com',
   });

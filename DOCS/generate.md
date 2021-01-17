@@ -1,25 +1,16 @@
-# Generate bookConfig.json from a script
 
-The `summariesToTrees` method takes an array of SUMMARY.md urls and writes to an array of URL trees as `bookConfig.json`. Run `node script.js` to generate `bookConfig.json`.
+# Reading Configuration Files
 
-```js
-var {summariesToTrees} = require("next-mdx-books");
+The `summaryToUrlTree` method takes in the location of a configuration file and lets you transform it to a JavaScript object.
 
-(async () => {
-  await summariesToTrees(
-    [
-      {
-        url:
-          "https://github.com/Open-EdTech/mostly-adequate-guide/blob/master/SUMMARY.md",
-      },
-      {
-        url: "https://github.com/GitbookIO/javascript/blob/master/SUMMARY.md",
-        removeHeadings: true
-      },
-    ],
-    "https://raw.githubusercontent.com/"
-  );
-})();
+## Getting started
+
+Make an empty node.js project and install `mdxbook`.
+
+```
+mkdir mdxbook-tutorial && cd mdxbook-tutorial 
+yarn init -y 
+yarn add mdxbook
 ```
 
 ## With Links to Headers

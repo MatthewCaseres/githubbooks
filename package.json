@@ -1,6 +1,6 @@
 {
   "version": "0.3.2",
-  "license": "MIT",
+  "license": "CC0-1.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "homepage": "https://www.openedtech.dev/Open-EdTech/next-mdx-books/about.md",
@@ -35,7 +35,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "next-mdx-books",
+  "name": "mdxbook",
   "author": "Matthew Caseres",
   "module": "dist/edtech.esm.js",
   "size-limit": [
