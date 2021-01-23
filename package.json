@@ -3,7 +3,7 @@
   "license": "CC0-1.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "homepage": "https://www.openedtech.dev/Open-EdTech/next-mdx-books/about.md",
+  "homepage": "https://openedtech.io",
   "files": [
     "dist",
     "src"

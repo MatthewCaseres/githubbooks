@@ -82,7 +82,12 @@ export const summaryToUrlTree: (config: Config) => any = async ({
       } else if (node.children[0].type === 'link') {
         node.type = 'file';
         node.route = node.children[0].url;
-        node.title = node.children[0].children[0].value;
+        //Links with no link text in AWS docs?
+        try{
+          node.title = node.children[0].children[0].value;
+        } catch (error) {
+          console.log(node, error)
+        }
       } else if (node.children[0].type === 'strong') {
         node.type = 'separator';
         node.title = node.children[0].children[0].value;
