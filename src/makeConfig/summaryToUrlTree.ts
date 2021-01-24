@@ -180,6 +180,6 @@ export const summaryToUrlTree: (config: Config) => any = async ({
   };
   dfsAddPaths(tree, []);
 
-  tree.type = 'directory';
+  tree.type = 'root';
   return tree;
 };
