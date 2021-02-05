@@ -1,5 +1,5 @@
 {
-  "type": "directory",
+  "type": "root",
   "children": [
     {
       "type": "directory",
@@ -9,7 +9,7 @@
           "type": "file",
           "route": "Open-EdTech/next-mdx-books/file1.md",
           "title": "file1",
-          "path": "/Users/matthewcaseres/Documents/GitHub/next-mdx-books/testData/file1.md",
+          "path": "/Users/matthewcaseres/Documents/GitHub/github-books/testData/file1.md",
           "rawUrl": "https://raw.githubusercontent.com/Open-EdTech/next-mdx-books/main/testData/file1.md",
           "ghUrl": "https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/file1.md",
           "headers": [
