@@ -1,17 +1,10 @@
----
-frontMatter: You put metadata about pages in the front matter
-updatedAt: January 24, 2021
----
-
 # About 
 
 ## Motivations
 
-This library helps you make a book from `.mdx` and `.md` files on GitHub. 
+This library helps you make a book from `.mdx` and `.md` files on GitHub. `mdxbook` has nothing to do with user interfaces and is independent of any JavaScript framework. `mdxbook` helps you use Markdown as a configuration file for content hosted on GitHub.
 
-`mdxbook` has nothing to do with user interfaces and is independent of any JavaScrip framework. `mdxbook` helps you use Markdown as a configuration file for content hosted on GitHub.
-
-Although this package is simply a markdown parser/formatter, it can be powerful when combined with technologies like MDX and Next.js. Markdown files from any public repository on GitHub can be turned into books, even repositories that you don't have permissions in. This is accomplished by requesting the raw text from GitHub, like this - https://raw.githubusercontent.com/twbs/bootstrap/main/README.md. This text is used at build time by next-mdx-remote to build a static site.
+Although this package is simply a markdown parser/formatter, it can be powerful when combined with a static site generator, effectively turning GitHub into a headless CMS. Markdown files from any public repository on GitHub can be turned into books, even repositories that you don't have permissions in. This is accomplished by requesting the raw text from GitHub for the generation of static pages at build time.
 
 ## Overview
 
@@ -109,5 +102,3 @@ the location of a URL serving the raw text content of the Markdown.
   ]
 }
 ```
-
-Read our documentation on generating configurations for more details.

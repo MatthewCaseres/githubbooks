@@ -1,7 +1,5 @@
 # Consuming Configuration Files
 
-This is an overview of some utility functions I have packaged up.
-
 ## getAllRoutesInfo
 `getAllRoutes` takes our URL trees and flattens them to an object that looks like this: 
 ```json

@@ -1,9 +1,9 @@
 
-# Reading Configuration Files
+# Generate Configuration JSON
 
-The `summaryToUrlTree` method takes in the location of a configuration file and lets you transform it to a JavaScript object.
+The `summaryToUrlTree` method takes in the location of a Markdown configuration file and lets you transform it to a JavaScript object.
 
-## Getting started
+## Get Started
 
 Make an empty node.js project and install `mdxbook`.
 
@@ -15,11 +15,11 @@ yarn add mdxbook
 
 Now you need to find a configuration file on GitHub. Let's use the configuration file for this documentation, https://github.com/Open-EdTech/mdxbook/blob/main/DOCS/DOCS.md.
 
-## summaryToUrlTree Basics
+## URL Tree Basics
 
 Make a file `script.js` containing the code below.
 
-```
+```js
 var {summaryToUrlTree} = require('mdxbook');
 var fs = require('fs');
 
@@ -33,7 +33,7 @@ var fs = require('fs');
 
 The url referenced contains the following Markdown file:
 
-```
+```md
 # docs
 
 * [About](about.md)
@@ -42,7 +42,7 @@ The url referenced contains the following Markdown file:
 
 After running the code via `node script.js` we see that a new file, `bookConfig.json` is created. 
 
-```
+```json
 {
   "type": "root",
   "children": [
@@ -79,13 +79,37 @@ This is called a "URL tree", a tree that specifies locations of resources.
 
 This is fundamentally what the software does, it is up to the user to implement a user interface. You can  use the source code of this website as a starting point.
 
-## Local development workflows
+## Arbitrary Repositories
+
+Our previous example used relative paths for links, this way of specifying links only allows for configuration files that live in the same repository as the content they reference. You may want to host markdown files from a GitHub repository that you do not own, and that does not have an `mdxbook` compatible configuration file.
+
+In this case you could certainly make a fork, but you don't need to. We support specifying full GitHub urls in our markdown configs.
+
+This - 
+
+```md
+# docs
+
+* [About](about.md)
+```
+
+is equivalent to this - 
+
+```md
+# docs
+
+* [About](https://github.com/Open-EdTech/mdxbook/blob/main/DOCS/about.md)
+```
+
+Using full urls you can specify books with content that is from arbitrary repositories on GitHub.
+
+## Local Development
 
 If you are writing content and do not want to push to GitHub (and wait for raw.githubusercontent to repopulate) to preview this content, we provide a method for the computation of local paths to resources. This way you can use local content when developing locally.
 
 Inside of the `summaryToUrlTree` method we add the path to our local copy of the repository.
 
-```
+```js
 (async () => {
   const docsTree = await summaryToUrlTree({
     url: "https://github.com/Open-EdTech/mdxbook/blob/main/DOCS/DOCS.md",
@@ -97,7 +121,7 @@ Inside of the `summaryToUrlTree` method we add the path to our local copy of the
 
 Rerunning `node script.js` yields a new URL tree with a local path. 
 
-```
+```json
 {
   "type": "directory",
   "children": [
@@ -125,7 +149,7 @@ Rerunning `node script.js` yields a new URL tree with a local path.
 }
 ```
 
-## Custom User Functions
+## User Functions
 
 We provide an option for the customization of URL tree nodes of type `file`. The user is given the AST for the markdown file in `mdast`, and the front matter in `frontMatter`. Modifications can be made to the node `node` using these passed in properties.
 
@@ -188,11 +212,9 @@ You should see the logged information. `bookConfig.json` will also have our new 
 
 This is possible because we give users a reference to the `node` object, which is mutable. `mdxbook` will iterate over the nodes that have associated markdown files, read them, parse them into their front matter and AST, and provide these things to the user for modifying the URL tree.
 
-## Final Steps
+## Multiple Books
 
-Because it is time consuming to generate the configuration (especially for many files with user defined functions), we recommend saving the result of `summaryToUrlTree` to a file and regenerating it when needed.
+Because it is time consuming to generate the configuration, we recommend saving the result of `summaryToUrlTree` to a file and regenerating it when needed as in the above demos.
 
-We recommend writing to an array, so that you can scale the number of books easily. Also, the utility functions discussed in the section on consuming URL trees work for arrays of URL trees, not a single URL tree.
-
-In your script file change `JSON.stringify(docsTree)` to `JSON.stringify([docsTree])` and you will have a configuration file that works with our other utilities.
+You can scale the number of books easily by writing to an array of URL trees. In your script file change `JSON.stringify(docsTree)` to `JSON.stringify([docsTree])`, rerun the script. Your configuration file is now compatible with the `getAllRoutesInfo` method for consuming configuration files
 

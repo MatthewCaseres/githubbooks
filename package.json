@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Open-EdTech/next-mdx-books.git"
+    "url": "https://github.com/Open-EdTech/github-books.git"
   },
   "scripts": {
     "start": "tsdx watch",
@@ -35,7 +35,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "mdxbook",
+  "name": "github-books",
   "author": "Matthew Caseres",
   "module": "dist/edtech.esm.js",
   "size-limit": [
