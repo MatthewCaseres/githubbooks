@@ -1,244 +1,125 @@
-# Next-MDX-Books
-
-This documentation is best viewed on the website for the docs: https://www.openedtech.dev/Open-EdTech/next-mdx-books/about.md
-## Purpose/Design
-This package generates/consumes a tree where nodes contain urls that serve markdown/MDX files. We refer to this as the URL tree.
-
-The URL tree can be generated from a table of contents written in markdown, compatible with existing GitBooks. Utility functions are provided to reformat the URL tree to play well with Next.js functions getStaticPaths and getStaticProps so that you can serve all the files specified in your table of contents.
+# github-books
 
 ## Installation
 ```
-yarn add next-mdx-boooks
+yarn add github-books
 #or
-npm install next-mdx-books
+npm install github-books
 ```
 
-# Generate bookConfig.json from a script
+## About
 
-The `summariesToTrees` method takes an array of SUMMARY.md urls and writes to an array of URL trees as `bookConfig.json`. Run `node script.js` to generate `bookConfig.json`.
+This library helps you make a book from `.mdx` and `.md` files on GitHub. `mdxbook` has nothing to do with user interfaces and is independent of any JavaScript framework.
+
+We take a table of contents that is written in Markdown and parse it to a JSON format that helps you use GitHub as a headless CMS. In less technical terms, we help you give your reader a good experience whether they read your content directly on GitHub or on your own custom platform.
+
+A major selling point is that we are compatible with existing GitBooks. We hope this configuration can become a standard and everything will be interoperable. Like EPUB for the Markdown era.
+
+## Basic Demonstration
+
+We take a file that has a markdown table of contents. Notice that we support both relative paths and full GitHub URLs. You can use content from other people's repositories by simply adding the URL.
+
+```markdown
+# Title of Book
+
+* [Study 1](study-guide.md)
+* [Study 2](https://github.com/MatthewCaseres/mdExperiments/blob/main/study-guide.md)
+```
+
+This file renders in a nice way on GitHub, and you can use GitHub to read the contents even without building your own web application.
+
+![](https://user-images.githubusercontent.com/43053796/107092690-a6d50d80-67c9-11eb-93b2-fcfc0b0b970a.png)
+
+You can generate a configuration file and save the JSON to a file.
 
 ```js
-var {summariesToTrees} = require("next-mdx-books");
+var { summaryToUrlTree } = require("github-books");
+var fs = require('fs');
 
 (async () => {
-  await summariesToTrees(
-    [
-      {
-        url:
-          "https://github.com/Open-EdTech/mostly-adequate-guide/blob/master/SUMMARY.md",
-      },
-      {
-        url: "https://github.com/GitbookIO/javascript/blob/master/SUMMARY.md",
-        removeHeadings: true
-      },
-    ],
-    "https://raw.githubusercontent.com/"
-  );
-})();
+  const config = await summaryToUrlTree({
+    url: "https://github.com/MatthewCaseres/mdExperiments/blob/main/config.md",
+    localPath: "/Users/matthewcaseres/Documents/GitHub/mdExperiments/config.md",
+  });
+  fs.writeFileSync('config.json', JSON.stringify(config))
+})()
 ```
 
-## With Links to Headers
-For the legacy gitbook with a SUMMARY.md file at https://github.com/Open-EdTech/mostly-adequate-guide/blob/master/SUMMARY.md we see a root node like this: 
-```json
-[
-  {
-    "type": "directory",
-    "children": [
-      {
-        "type": "file",
-        "route": "Open-EdTech/mostly-adequate-guide/ch01.md",
-        "title": "Chapter 01: What Ever Are We Doing?",
-        "rawUrl": "https://raw.githubusercontent.com/Open-EdTech/mostly-adequate-guide/master/ch01.md",
-        "ghUrl": "https://github.com/Open-EdTech/mostly-adequate-guide/blob/master/ch01.md",
-        "children": [
-          {
-            "title": "Introductions",
-            "route": "Open-EdTech/mostly-adequate-guide/ch01.md/#introductions",
-            "type": "heading"
-          },
-          {
-            "title": "A Brief Encounter",
-            "route": "Open-EdTech/mostly-adequate-guide/ch01.md/#a-brief-encounter",
-            "type": "heading"
-          }
-        ]
-      },
-//    ...
-```
+Here are some observations about the generated object:
 
-## Without Header Links
-`rawUrl` is the location where we fetch the raw text of the page from. `ghUrl` is included to allow for an 'edit' this page button on each page. `title` is for displaying link text in a navigation menu.
+* Nodes contain a `ghUrl` with the location of the file on GitHub, as well as a `rawUrl` that contains the location of a URL serving the raw text content of the Markdown.
+* A `path` property exists for all files with links that are relative paths. This allows for local development workflows when authoring contents.
 
-We also loaded a non-legacy GitBook from https://github.com/GitbookIO/javascript/blob/master/SUMMARY.md, non-legacy GitBooks navigate to related sub-files, not headers.
-
-```json
-// ...
-  {
-    "type": "directory",
-    "children": [
-      {
-        "type": "file",
-        "route": "GitbookIO/javascript/basics/README.md",
-        "title": "Basics",
-        "children": [
-          {
-            "type": "file",
-            "route": "GitbookIO/javascript/basics/comments.md",
-            "title": "Comments",
-            "rawUrl": "https://raw.githubusercontent.com/GitbookIO/javascript/master/basics/comments.md",
-            "ghUrl": "https://github.com/GitbookIO/javascript/blob/master/basics/comments.md"
-          },
-          {
-            "type": "file",
-            "route": "GitbookIO/javascript/basics/variables.md",
-            "title": "Variables",
-            "rawUrl": "https://raw.githubusercontent.com/GitbookIO/javascript/master/basics/variables.md",
-            "ghUrl": "https://github.com/GitbookIO/javascript/blob/master/basics/variables.md"
-          },
-      //  ...
-```
-
-## Function Arguments
-Here is the type of summariesToTrees. 
-```
-declare type LocalConfig = {
-    local: true;
-    localPath: string;
-    url?: string;
-    removeHeadings?: boolean;
-};
-declare type RemoteConfig = {
-    localPath?: string;
-    url: string;
-    removeHeadings?: boolean;
-};
-export declare type Config = LocalConfig | RemoteConfig;
-export declare type AllConfigs = Config[];
-export default function summariesToTrees(configs: AllConfigs, rawProvider?: string): Promise<void>;
-```
-
-## rawProvider
-The second positional argument if not provided defaults to loading markdown from https://gitcdn.xyz/, you can override it to load from https://raw.githubusercontent.com/ at the risk of rate limiting (I have had no problems with this so far).
-
-## local development and localPath
-We support loading files locally so you don't have to push commits to GitHub to view your book. Enable local development by passing `local: true` along with the path to the location of your summary file.
-
-This script
-```js
-var {summariesToTrees} = require("next-mdx-books");
-
-(async () => {
-  await summariesToTrees(
-    [
-      {
-        local: true,
-        localPath: "C:\\Users\\matth\\OneDrive\\Documents\\GitHub\\mostly-adequate\\SUMMARY.md",
-        url:
-          "https://github.com/Open-EdTech/mostly-adequate-guide/blob/master/SUMMARY.md",
-      },
-    ],
-  );
-})();
-```
-produces this:
-```json
-[
-  {
-    "type": "directory",
-    "children": [
-      {
-        "type": "file",
-        "route": "Open-EdTech/mostly-adequate-guide/ch01.md",
-        "title": "Chapter 01: What Ever Are We Doing?",
-        "path": "C:\\Users\\matth\\OneDrive\\Documents\\GitHub\\mostly-adequate\\ch01.md",
-        "rawUrl": "https://gitcdn.xyz/repo/Open-EdTech/mostly-adequate-guide/master/ch01.md",
-        "ghUrl": "https://github.com/Open-EdTech/mostly-adequate-guide/blob/master/ch01.md",
-        "children": [
-          {
-            "title": "Introductions",
-            "route": "Open-EdTech/mostly-adequate-guide/ch01.md/#introductions",
-            "type": "heading"
-          },
-          //...
-```
-# Consuming Configuration Files
-After creating `bookConfig.json` we produce routes for each node in the URL tree that has a `rawUrl` property. To do this we use dynamic routes in Next.js with dynamic routes, definitely be familiar with this if you want to know how this software works.
-
-## getAllRoutesInfo
-type:
-```ts
-function getAllRoutesInfo(urlTrees: UrlNode[]): Promise<Record<string, FlatNode>>;
-```
-`getAllRoutes` takes our URL trees and flattens them to an object that looks like this: 
 ```json
 {
-  "Open-EdTech/mostly-adequate-guide/ch01.md": {
-    "route": "Open-EdTech/mostly-adequate-guide/ch01.md",
-    "title": "Chapter 01: What Ever Are We Doing?",
-    "path": "C:\\Users\\matth\\OneDrive\\Documents\\GitHub\\mostly-adequate\\ch01.md",
-    "rawUrl": "https://gitcdn.xyz/repo/Open-EdTech/mostly-adequate-guide/master/ch01.md",
-    "ghUrl": "https://github.com/Open-EdTech/mostly-adequate-guide/blob/master/ch01.md",
-    "index": 0
-  },
-  "Open-EdTech/mostly-adequate-guide/ch02.md": {
-    "route": "Open-EdTech/mostly-adequate-guide/ch02.md",
-    "title": "Chapter 02: First Class Functions",
-    "path": "C:\\Users\\matth\\OneDrive\\Documents\\GitHub\\mostly-adequate\\ch02.md",
-    "rawUrl": "https://gitcdn.xyz/repo/Open-EdTech/mostly-adequate-guide/master/ch02.md",
-    "ghUrl": "https://github.com/Open-EdTech/mostly-adequate-guide/blob/master/ch02.md",
-    "index": 0
-  },
-  //...
+  "type": "root",
+  "children": [
+    {
+      "type": "file",
+      "route": "MatthewCaseres/mdExperiments/study-guide.md",
+      "title": "Study 1",
+      "path": "/Users/matthewcaseres/Documents/GitHub/mdExperiments/study-guide.md",
+      "rawUrl": "https://raw.githubusercontent.com/MatthewCaseres/mdExperiments/main/study-guide.md",
+      "ghUrl": "https://github.com/MatthewCaseres/mdExperiments/blob/main/study-guide.md",
+      "treePath": [0]
+    },
+    {
+      "type": "file",
+      "route": "MatthewCaseres/mdExperiments/study-guide.md",
+      "title": "Study 2",
+      "ghUrl": "https://github.com/MatthewCaseres/mdExperiments/blob/main/study-guide.md",
+      "rawUrl": "https://raw.githubusercontent.com/MatthewCaseres/mdExperiments/main/study-guide.md",
+      "treePath": [1]
+    }
+  ],
+  "title": "Title of Book",
+  "treePath": []
 }
 ```
-We can use this `allRoutesInfo` object's keys to specify the dynamic routes to create in getStaticPaths for a file named [...id].tsx.
-```js
-import { GetStaticPaths, GetStaticProps } from "next";
-import { getAllRoutesInfo } from "next-mdx-books";
-import bookConfig from '../bookConfig.json'
 
-export const getStaticPaths = async () => {
-  const allRoutesInfo = await getAllRoutesInfo(bookConfig);
-  return {
-    paths: Object.keys(allRoutesInfo).map((routeString) => ({
-      params: {
-        id: routeString.split("/"),
-      },
-    })),
-    fallback: false,
-  };
-};
-```
-In getStaticProps we can grab some information to pass down to our page. Here, we grab the `urlTree` so that each page can display a table of contents in the side navigation. We get the GitHub url, `ghUrl`, to add an 'edit this page' feature. 
-```js
-import { getMdSource, getAllRoutesInfo } from "next-mdx-books";
-import renderToString from "next-mdx-remote/render-to-string";
-import hydrate, { Source } from "next-mdx-remote/hydrate";
-import bookConfig from '../bookConfig.json'
+## User Functions
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const allRoutesInfo = await getAllRoutesInfo(bookConfig);
-  const stringRoute = (params!.id as string[]).join("/");
-  const nodeIndex = allRoutesInfo[stringRoute].index;
-  const ghUrl = allRoutesInfo[stringRoute].ghUrl;
-  const urlTree = bookConfig[nodeIndex];
-  const source = await getMdSource(stringRoute, allRoutesInfo, remote);
-  const mdxSource = await renderToString(source);
-  return {
-    props: { urlTree, mdxSource, stringRoute, ghUrl }, // will be passed to the page component as props
-  };
-};
-//From openedtech.dev
-function Post({ urlTree, mdxSource, ghUrl }: { urlTree: UrlNode; mdxSource: Source, ghUrl: string }) {
-  const content = hydrate(mdxSource);
-  return (
-      <SideBarProvider config={urlTree.children as StatefulNode[]}>
-        <SideBar ghUrl={ghUrl}>
-          <div className="prose dark:prose-dark max-w-sm sm:max-w-md lg:max-w-xl xl:max-w-2xl m-auto px-2 flex-1 ">
-            <div>{content}</div>
-          </div>
-        </SideBar>
-      </SideBarProvider>
-  );
-}
+Users can write custom functions. The user is given the AST for the markdown file in `mdast`, and the front matter in `frontMatter`. Modifications can be made for each node of type `file` on the basis of it's abstract syntax tree.
+
+The unified ecosystem is basically about turning text into JSON (abstract syntax trees to be precise). If you want to see what an Abstract Syntax Tree for your markdown document looks like you can go to the AST explorer. Mess around with this.
+
+https://astexplorer.net/#/gist/2effedb015f5929d9a63398a6634370f/6a90ae4d41d5b92c28c623523d883f6a518ee8de
+
+Run the code below to see that we can grab information from inside the markdown files and make modifications to the generated configuration. The logs actually repeat, because our configuration has two list items that point to the same location.
+
+Remember to run `yarn add unist-util-visit`. This is a utility built by the unified.js people, whose work allows us to do all that we are doing. Having a good idea of the unified ecosystem will really help you when working with Markdown, check them out at https://unifiedjs.com/.
+
+```js
+var {summaryToUrlTree} = require('github-books');
+var fs = require('fs');
+var visit = require('unist-util-visit');
+
+(async () => {
+  const docsTree = await summaryToUrlTree({
+    url: "https://github.com/MatthewCaseres/mdExperiments/blob/main/config.md",
+    userFunction: (node, {mdast, frontMatter}) => {
+      // You could collect information about headings and add it to the tree
+      visit(mdast, 'heading', (mdNode) => {
+        console.log('Heading Node', mdNode)
+      })
+      //Or use the frontMatter
+      console.log('frontMatter', frontMatter)
+      //But instead we just laugh
+      node.lol = "lol"
+    }
+  })
+  console.log("docsTree", docsTree)
+})()
 ```
+
+## Consuming Generated JSON
+
+Use the `rawUrl` field from tree nodes to fetch text data and use GitHub as a headless CMS. You can do this however you want, but we have a template for Next.js.
+
+```
+npx create-next-app -e https://github.com/Open-EdTech/github-books-template
+# or
+yarn create next-app -e https://github.com/Open-EdTech/github-books-template
+```
+
+
