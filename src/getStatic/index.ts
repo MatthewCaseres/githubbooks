@@ -62,14 +62,11 @@ export function getRoutesInfo(root: UrlNode, index: number) {
 }
 
 export async function getMdSource(
-  route: string,
-  allRawRoutes: Record<string, FlatNode>,
-  remote = true
+  {rawUrl, path: localPath}: FlatNode,
+  local?: boolean
 ) {
-  let rawUrl = allRawRoutes[route].rawUrl;
-  let localPath = allRawRoutes[route].path;
   let source: string;
-  if (!remote && localPath !== undefined) {
+  if (local && localPath !== undefined) {
     source = fs.readFileSync(localPath, 'utf8');
   } else {
     source = await (await axios.get(rawUrl)).data;
