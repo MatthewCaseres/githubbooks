@@ -21,6 +21,9 @@ export type FlatNode = {
   ghUrl: string;
   route: string;
   path: string;
+  title: string;
+  next?: {title: string, route: string};
+  prev?: {title: string, route: string};
   index: number;
 };
 export type FlatNodes = FlatNode[];
@@ -45,16 +48,18 @@ export function getRoutesInfo(root: UrlNode, index: number) {
   let paths: FlatNodes = [];
   function dfs(node: UrlNode) {
     if ('rawUrl' in node) {
-      let { rawUrl, ghUrl, route, path, treePath } = node;
-      paths.push({ rawUrl, ghUrl, route, path, index, treePath } as FlatNode);
+      let { title, rawUrl, ghUrl, route, path, treePath } = node;
+      paths.push({ title, rawUrl, ghUrl, route, path, index, treePath } as FlatNode);
     }
-    if ('children' in node && node.children) {
-      for (let child of node.children) {
-        dfs(child);
-      }
+    for (let child of node.children ?? []) {
+      dfs(child);
     }
   }
   dfs(root);
+  for (let i = 1; i < paths.length; i++) {
+    paths[i].prev = {title: paths[i-1].title, route: paths[i-1].route}
+    paths[i-1].next = {title: paths[i].title, route: paths[i].route}
+  }
   return paths.reduce<Record<string, FlatNode>>((a, b) => {
     a[b.route] = b;
     return a;
