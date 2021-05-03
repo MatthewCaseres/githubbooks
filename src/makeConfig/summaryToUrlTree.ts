@@ -16,9 +16,8 @@ export type TreeNode = {
   rawUrl?: string;
   [key: string]: any;
 };
-export type UserFunction = (
-  tree: TreeNode,
-  fileContents: {
+export type UserFunction = (ctx: {
+    treeNode: TreeNode
     mdast: { type: string; [key: string]: any };
     frontMatter: { [key: string]: any };
   }
@@ -157,7 +156,7 @@ export const summaryToUrlTree: (config: Config) => any = async ({
       let mdast = unified()
         .use(markdown)
         .parse(md);
-      userFunc(node, { mdast, frontMatter });
+      userFunc({treeNode: node, mdast, frontMatter });
     }
     if (node.children) {
       for (let child of node.children) {
