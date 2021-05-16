@@ -29,7 +29,7 @@ export type FlatNode = {
 export type FlatNodes = FlatNode[];
 
 export function getAllRoutesInfo(urlTrees: UrlNode[]) {
-  let allRawRoutes: Record<string, FlatNode> = {};
+  let allRawRoutes: Partial<Record<string, FlatNode>> = {};
   for (let i = 0; i < urlTrees.length; i++) {
     allRawRoutes = {
       ...allRawRoutes,

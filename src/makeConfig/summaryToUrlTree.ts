@@ -20,6 +20,7 @@ export type UserFunction = (ctx: {
     treeNode: TreeNode
     mdast: { type: string; [key: string]: any };
     frontMatter: { [key: string]: any };
+    file: string
   }
 ) => void;
 export type Config = {
@@ -35,13 +36,14 @@ export const summaryToUrlTree: (config: Config) => any = async ({
   userFunction,
   rawProvider = 'https://raw.githubusercontent.com',
 }) => {
+  if (!url) {
+    throw new Error(`File with has no url for remote loading`);
+  }
   const { ghPrefix, rawPrefix, full_name, rawSummaryUrl } = getGhRawUrl(
     url,
     rawProvider
   );
-  if (!url) {
-    throw new Error(`File with has no url for remote loading`);
-  }
+  
 
   let file;
   if (!localPath) {
@@ -156,7 +158,7 @@ export const summaryToUrlTree: (config: Config) => any = async ({
       let mdast = unified()
         .use(markdown)
         .parse(md);
-      userFunc({treeNode: node, mdast, frontMatter });
+      userFunc({treeNode: node, mdast, frontMatter, file });
     }
     if (node.children) {
       for (let child of node.children) {
