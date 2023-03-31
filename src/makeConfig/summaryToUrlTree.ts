@@ -200,7 +200,8 @@ export const summaryToUrlTree: (config: Config) => any = async ({
       const tree = root.children[i + 1];
 
       //If heading w/o a tree, move on
-      if (tree && tree.type != 'heading') {
+      //if (tree && tree.type != 'heading') {
+      if (tree && tree.type == 'list') {
         i++;
       } else {
         continue;
