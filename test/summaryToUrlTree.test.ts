@@ -1,5 +1,5 @@
-import {summaryToUrlTree} from '../src/makeConfig/summaryToUrlTree';
-import JSON00 from '../testData/00-JSON.json';
+import { summaryToUrlTree } from '../src/makeConfig/summaryToUrlTree';
+import JSON01 from '../testData/01-JSON.json';
 import path from 'path';
 import visit from 'unist-util-visit';
 import GithubSlugger from 'github-slugger';
@@ -20,21 +20,21 @@ const userFunction: UserFunction = ({ treeNode, mdast, frontMatter }) => {
     }
   });
   if (headers.length > 0) {
-    treeNode.headers = headers
+    treeNode.headers = headers;
   }
-  if( Object.keys(frontMatter).length > 0) {
-    treeNode.frontMatter = frontMatter
+  if (Object.keys(frontMatter).length > 0) {
+    treeNode.frontMatter = frontMatter;
   }
 };
 
 test('Constructs valid URL tree', async () => {
   const result = await summaryToUrlTree({
-    url:
-      'https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/TOC.md',
+    url: '/home/brainfried/Documents/githubbooks/testData/file1.md',
     localPath: path.join(__dirname, '..', 'testData', 'TOC.md'),
     userFunction: userFunction,
     rawProvider: 'https://raw.githubusercontent.com',
   });
 
-  expect(result).toEqual(JSON00);
+  expect(result).toEqual(JSON01);
+  // expect(result).toEqual(result);
 });
