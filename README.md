@@ -1,5 +1,9 @@
 # github-books
 
+## Archived
+
+Some updates have been made on this fork - https://github.com/dylviz/githubbooks, I am no longer maintaining repo this in favor of hosting content on GitHub directly
+
 ## Installation
 ```
 yarn add github-books
