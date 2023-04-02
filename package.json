@@ -3,7 +3,7 @@
   "license": "CC0-1.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "homepage": "https://openedtech.io",
+  "homepage": "",
   "files": [
     "dist",
     "src"
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Open-EdTech/github-books.git"
+    "url": "https://github.com/dylviz/githubbooks"
   },
   "scripts": {
     "start": "tsdx watch",
@@ -35,8 +35,8 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "github-books",
-  "author": "Matthew Caseres",
+  "name": "@brainfried/github-books",
+  "author": "MatthewCaseres, Brainfried",
   "module": "dist/edtech.esm.js",
   "size-limit": [
     {

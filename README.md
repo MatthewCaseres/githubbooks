@@ -1,10 +1,11 @@
 # github-books
 
 ## Installation
+
 ```
-yarn add github-books
+yarn add @brainfried/github-books
 #or
-npm install github-books
+npm install @brainfried/github-books
 ```
 
 ## About
@@ -22,8 +23,8 @@ We take a file that has a markdown table of contents. Notice that we support bot
 ```markdown
 # Title of Book
 
-* [Study 1](study-guide.md)
-* [Study 2](https://github.com/MatthewCaseres/mdExperiments/blob/main/study-guide.md)
+- [Study 1](study-guide.md)
+- [Study 2](https://github.com/MatthewCaseres/mdExperiments/blob/main/study-guide.md)
 ```
 
 This file renders in a nice way on GitHub, and you can use GitHub to read the contents even without building your own web application.
@@ -33,22 +34,22 @@ This file renders in a nice way on GitHub, and you can use GitHub to read the co
 You can generate a configuration file and save the JSON to a file.
 
 ```js
-var { summaryToUrlTree } = require("github-books");
+var { summaryToUrlTree } = require('github-books');
 var fs = require('fs');
 
 (async () => {
   const config = await summaryToUrlTree({
-    url: "https://github.com/MatthewCaseres/mdExperiments/blob/main/config.md",
-    localPath: "/Users/matthewcaseres/Documents/GitHub/mdExperiments/config.md",
+    url: 'https://github.com/MatthewCaseres/mdExperiments/blob/main/config.md',
+    localPath: '/Users/matthewcaseres/Documents/GitHub/mdExperiments/config.md',
   });
-  fs.writeFileSync('config.json', JSON.stringify(config))
-})()
+  fs.writeFileSync('config.json', JSON.stringify(config));
+})();
 ```
 
 Here are some observations about the generated object:
 
-* Nodes contain a `ghUrl` with the location of the file on GitHub, as well as a `rawUrl` that contains the location of a URL serving the raw text content of the Markdown.
-* A `path` property exists for all files with links that are relative paths. This allows for local development workflows when authoring contents.
+- Nodes contain a `ghUrl` with the location of the file on GitHub, as well as a `rawUrl` that contains the location of a URL serving the raw text content of the Markdown.
+- A `path` property exists for all files with links that are relative paths. This allows for local development workflows when authoring contents.
 
 ```json
 {
@@ -90,26 +91,26 @@ Run the code below to see that we can grab information from inside the markdown 
 Remember to run `yarn add unist-util-visit`. This is a utility built by the unified.js people, whose work allows us to do all that we are doing. Having a good idea of the unified ecosystem will really help you when working with Markdown, check them out at https://unifiedjs.com/.
 
 ```js
-var {summaryToUrlTree} = require('github-books');
+var { summaryToUrlTree } = require('github-books');
 var fs = require('fs');
 var visit = require('unist-util-visit');
 
 (async () => {
   const docsTree = await summaryToUrlTree({
-    url: "https://github.com/MatthewCaseres/mdExperiments/blob/main/config.md",
-    userFunction: (node, {mdast, frontMatter}) => {
+    url: 'https://github.com/MatthewCaseres/mdExperiments/blob/main/config.md',
+    userFunction: (node, { mdast, frontMatter }) => {
       // You could collect information about headings and add it to the tree
-      visit(mdast, 'heading', (mdNode) => {
-        console.log('Heading Node', mdNode)
-      })
+      visit(mdast, 'heading', mdNode => {
+        console.log('Heading Node', mdNode);
+      });
       //Or use the frontMatter
-      console.log('frontMatter', frontMatter)
+      console.log('frontMatter', frontMatter);
       //But instead we just laugh
-      node.lol = "lol"
-    }
-  })
-  console.log("docsTree", docsTree)
-})()
+      node.lol = 'lol';
+    },
+  });
+  console.log('docsTree', docsTree);
+})();
 ```
 
 # Consuming Generated JSON
@@ -124,17 +125,18 @@ yarn create next-app gh-books-template -e https://github.com/Open-EdTech/github-
 ```
 
 Make sure the dependencies are installed if not using the Next.js CLI.
+
 ```
 npm run dev
 # or
 yarn dev
 ```
 
-You should see the application on port 3000, 
+You should see the application on port 3000,
 
 ![](https://user-images.githubusercontent.com/43053796/107110475-c4c46180-680d-11eb-9163-1bcbe8a5de75.png)
 
-The blue button takes you to the book - 
+The blue button takes you to the book -
 
 ![](https://user-images.githubusercontent.com/43053796/107110516-1371fb80-680e-11eb-9f8a-1d3494877a27.png)
 
@@ -142,7 +144,7 @@ The blue button takes you to the book -
 
 There is a file `bookConfig.ts` that generates the configuration files using an IIFE. At the bottom of the file you can see that we write `bookConfig.json` using the configuration file at https://github.com/basarat/typescript-book/blob/master/SUMMARY.md.
 
-To add a new book we just need to write another tree to `bookConfig.json`. In some cases you want to host other people's stuff but there is no configuration file in their repository since they aren't using GitBook. Do not despair, you can write your own configuration file in your own repository that contains links to their repository. 
+To add a new book we just need to write another tree to `bookConfig.json`. In some cases you want to host other people's stuff but there is no configuration file in their repository since they aren't using GitBook. Do not despair, you can write your own configuration file in your own repository that contains links to their repository.
 
 In this configuration file we link to the AWS documentation on getting started with AWS - https://github.com/MatthewCaseres/aws-docs-configs/blob/main/configs/amazon-s3-getting-started-guide.md. Let's add the tree to our array of configuration trees.
 
@@ -161,12 +163,10 @@ In this configuration file we link to the AWS documentation on getting started w
 
 Generate a new configuration file using `yarn book` or `npm run book`. The array of trees now contains two trees in `bookConfig.json`. Visit the route at http://localhost:3000/awsdocs/amazon-s3-getting-started-guide/doc_source/GetStartedWithS3.md to see your book. To know the route I just go into the generated `bookConfig.json` and grab the first route property on the first tree.
 
-
 ## Thoughts
 
 You can see our platform on openedtech.io if you want to see how we customize our markdown to be interactive.
 
-The software is not perfect, but I try to be clear about what it is and how I use it on my own website. 
+The software is not perfect, but I try to be clear about what it is and how I use it on my own website.
 
 I think there is a lot of potential and a long road ahead. Ultimately I think we need some sort of standard for books in a markdown/GitHub era of content.
-
