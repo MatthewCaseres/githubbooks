@@ -17,12 +17,11 @@ export type TreeNode = {
   [key: string]: any;
 };
 export type UserFunction = (ctx: {
-    treeNode: TreeNode
-    mdast: { type: string; [key: string]: any };
-    frontMatter: { [key: string]: any };
-    file: string
-  }
-) => void;
+  treeNode: TreeNode;
+  mdast: { type: string; [key: string]: any };
+  frontMatter: { [key: string]: any };
+  file: string;
+}) => void;
 export type Config = {
   url: string;
   rawProvider?: string;
@@ -36,34 +35,10 @@ export const summaryToUrlTree: (config: Config) => any = async ({
   userFunction,
   rawProvider = 'https://raw.githubusercontent.com',
 }) => {
-  if (!url) {
-    throw new Error(`File with has no url for remote loading`);
-  }
-  const { ghPrefix, rawPrefix, full_name, rawSummaryUrl } = getGhRawUrl(
-    url,
-    rawProvider
-  );
-  
-
-  let file;
-  if (!localPath) {
-    file = await (await axios.get(rawSummaryUrl)).data;
-  } else {
-    file = await read(localPath);
-  }
-
-  const root = unified()
-    .use(markdown)
-    .parse(file) as any;
-  const title = root.children[0].children[0].value;
-  const tree = root.children[1];
-  tree.title = title;
-
-  delete tree.spread;
-  delete tree.ordered;
-  delete tree.start;
-  delete tree.position;
-
+  /**
+   * Function
+   * @param node
+   */
   const dfsRemoveListItem = (node: any) => {
     if (node.type === 'list') {
       node.children = node.children.reduce(
@@ -84,10 +59,10 @@ export const summaryToUrlTree: (config: Config) => any = async ({
         node.type = 'file';
         node.route = node.children[0].url;
         //Links with no link text in AWS docs?
-        try{
+        try {
           node.title = node.children[0].children[0].value;
         } catch (error) {
-          console.log(node, error)
+          console.log(node, error);
         }
       } else if (node.children[0].type === 'strong') {
         node.type = 'separator';
@@ -97,8 +72,10 @@ export const summaryToUrlTree: (config: Config) => any = async ({
       delete node.position;
     }
   };
-  dfsRemoveListItem(tree);
-
+  /**
+   *
+   * @param node
+   */
   const dfsRemoveList = (node: any) => {
     let children = node.children;
     let i = 0;
@@ -115,8 +92,11 @@ export const summaryToUrlTree: (config: Config) => any = async ({
       i++;
     }
   };
-  dfsRemoveList(tree);
-
+  /**
+   *
+   * @param node
+   * @returns
+   */
   const dfsAddContents = async (node: any) => {
     if (node.route && node.type === 'file') {
       if (node.route.startsWith('https://github.com')) {
@@ -143,8 +123,11 @@ export const summaryToUrlTree: (config: Config) => any = async ({
     }
     return node;
   };
-  await dfsAddContents(tree);
-
+  /**
+   *
+   * @param node
+   * @param userFunc
+   */
   const dfsUserFunction = async (node: TreeNode, userFunc: UserFunction) => {
     let file: string | undefined;
     if (node.path) {
@@ -158,7 +141,7 @@ export const summaryToUrlTree: (config: Config) => any = async ({
       let mdast = unified()
         .use(markdown)
         .parse(md);
-      userFunc({treeNode: node, mdast, frontMatter, file });
+      userFunc({ treeNode: node, mdast, frontMatter, file });
     }
     if (node.children) {
       for (let child of node.children) {
@@ -166,10 +149,11 @@ export const summaryToUrlTree: (config: Config) => any = async ({
       }
     }
   };
-  if (userFunction) {
-    await dfsUserFunction(tree, userFunction);
-  }
-
+  /**
+   *
+   * @param node
+   * @param treePath
+   */
   const dfsAddPaths = (node: any, treePath: number[]) => {
     node.treePath = treePath;
     if (node.children) {
@@ -179,8 +163,73 @@ export const summaryToUrlTree: (config: Config) => any = async ({
       }
     }
   };
-  dfsAddPaths(tree, []);
 
-  tree.type = 'root';
-  return tree;
+  //Error Checking
+  if (!url) {
+    throw new Error(`File with has no url for remote loading`);
+  }
+  //Getting URL for Raw Data
+  const { ghPrefix, rawPrefix, full_name, rawSummaryUrl } = getGhRawUrl(
+    url,
+    rawProvider
+  );
+
+  //Get md file data
+  let file;
+  if (!localPath) {
+    file = await (await axios.get(rawSummaryUrl)).data;
+  } else {
+    file = await read(localPath);
+  }
+
+  //Parse md file into objects
+  const root = unified()
+    .use(markdown)
+    .parse(file) as any;
+
+  let trees = [];
+
+  for (let i = 0; i < root.children.length; i++) {
+    const title = root.children[i].children[0].value;
+
+    //New title found - indicates a new tree
+    //*It's possible that a heading doesn't have a corresponding list
+    //* the opposite isn't supported - Must have at least 1 title
+    if (title) {
+      //Grab the following child (check type list) and increment counter
+      const tree = root.children[i + 1];
+
+      //If heading w/o a tree, move on
+      //if (tree && tree.type != 'heading') {
+      if (tree && tree.type == 'list') {
+        i++;
+      } else {
+        continue;
+      }
+
+      //Prune tree
+      delete tree.spread;
+      delete tree.ordered;
+      delete tree.start;
+      delete tree.position;
+
+      //Add tree
+      tree.title = title;
+      trees.push(tree);
+    }
+  }
+
+  //Iterate though all trees
+  for (let i = 0; i < trees.length; i++) {
+    dfsRemoveListItem(trees[i]);
+    dfsRemoveList(trees[i]);
+    await dfsAddContents(trees[i]);
+    if (userFunction) {
+      await dfsUserFunction(trees[i], userFunction);
+    }
+    dfsAddPaths(trees[i], []);
+    trees[i].type = 'root';
+  }
+
+  return trees;
 };

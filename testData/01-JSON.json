@@ -1,0 +1,88 @@
+[{
+  "type": "root",
+  "children": [
+    {
+      "type": "directory",
+      "title": "directory",
+      "children": [
+        {
+          "type": "file",
+          "route": "home/brainfried/Documents/githubbooks/testData/file1.md/file1.md",
+          "title": "file1",
+          "path": "/home/brainfried/Documents/githubbooks/testData/file1.md",
+          "rawUrl": "https://raw.githubusercontent.com/home/brainfried/Documents/githubbooks/testData/file1.md",
+          "ghUrl": "https://github.com/home/brainfried/Documents/githubbooks/testData/file1.md",
+          "headers": [
+            {
+              "title": "h2 1",
+              "route": "home/brainfried/Documents/githubbooks/testData/file1.md/file1.md/#h2-1",
+              "type": "heading"
+            },
+            {
+              "title": "h2 2",
+              "route": "home/brainfried/Documents/githubbooks/testData/file1.md/file1.md/#h2-2",
+              "type": "heading"
+            }
+          ],
+          "frontMatter": { "hello": "FrontMatter" },
+          "treePath": [0, 0]
+        }
+      ],
+      "treePath": [0]
+    },
+    { "type": "separator", "title": "separator", "treePath": [1] },
+    {
+      "type": "file",
+      "route": "Open-EdTech/next-mdx-books/testData/file2.md",
+      "title": "fullUrl",
+      "ghUrl": "https://github.com/Open-EdTech/next-mdx-books/blob/main/testData/file2.md",
+      "rawUrl": "https://raw.githubusercontent.com/Open-EdTech/next-mdx-books/main/testData/file2.md",
+      "headers": [
+        {
+          "title": "h2 1",
+          "route": "Open-EdTech/next-mdx-books/testData/file2.md/#h2-1",
+          "type": "heading"
+        },
+        {
+          "title": "h2 2",
+          "route": "Open-EdTech/next-mdx-books/testData/file2.md/#h2-2",
+          "type": "heading"
+        }
+      ],
+      "treePath": [2]
+    }
+  ],
+  "title": "Title",
+  "treePath": []
+},
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "file",
+      "route": "home/brainfried/Documents/githubbooks/testData/file1.md/file3.md",
+      "title": "file3",
+      "path": "/home/brainfried/Documents/githubbooks/testData/file3.md",
+      "rawUrl": "https://raw.githubusercontent.com/home/brainfried/Documents/githubbooks/testData/file3.md",
+      "ghUrl": "https://github.com/home/brainfried/Documents/githubbooks/testData/file3.md",
+      "headers": [
+        {
+          "title": "h2 1",
+          "route": "home/brainfried/Documents/githubbooks/testData/file1.md/file3.md/#h2-1",
+          "type": "heading"
+        },
+        {
+          "title": "h2 2",
+          "route": "home/brainfried/Documents/githubbooks/testData/file1.md/file3.md/#h2-2",
+          "type": "heading"
+        }
+      ],
+      "treePath": [
+        0
+      ]
+    }
+  ],
+  "title": "h2 title",
+  "treePath": []
+}
+]
